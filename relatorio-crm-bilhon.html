@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório CRM — Bilhon</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f0f13;
+      color: #e8e8f0;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: 60px 40px;
+      text-align: center;
+      border-bottom: 3px solid #4f8ef7;
+    }
+
+    .header .label {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #4f8ef7;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .header h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .header p {
+      font-size: 18px;
+      color: #a0aec0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 50px 30px;
+    }
+
+    /* SEÇÕES */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #4f8ef7;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section h2 {
+      font-size: 30px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #2a2a3e;
+    }
+
+    /* DIAGNÓSTICO — cards de problema */
+    .problems-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .problem-card {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-left: 4px solid #e53e3e;
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+
+    .problem-card .icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .problem-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fc8181;
+      margin-bottom: 6px;
+    }
+
+    .problem-card p {
+      font-size: 15px;
+      color: #a0aec0;
+    }
+
+    /* STACK DE FERRAMENTAS */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .tool-card {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tool-card .tool-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .tool-card .tool-role {
+      font-size: 14px;
+      color: #718096;
+    }
+
+    .tool-card .tool-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 4px;
+      width: fit-content;
+    }
+
+    .badge-critical { background: #2d1515; color: #fc8181; border: 1px solid #e53e3e; }
+    .badge-keep    { background: #1a2d1a; color: #68d391; border: 1px solid #38a169; }
+    .badge-replace { background: #2d1515; color: #fc8181; border: 1px solid #e53e3e; }
+    .badge-neutral { background: #1a1a2e; color: #a0aec0; border: 1px solid #4a5568; }
+
+    /* REQUISITOS */
+    .req-block {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin-bottom: 16px;
+    }
+
+    .req-block h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .req-block h3 .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #4f8ef7;
+      flex-shrink: 0;
+    }
+
+    .req-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .req-list li {
+      font-size: 16px;
+      color: #cbd5e0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .req-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #4f8ef7;
+      font-weight: 700;
+    }
+
+    /* COMPARATIVO */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .comparison-table thead tr {
+      background: #1e2a4a;
+    }
+
+    .comparison-table th {
+      padding: 18px 20px;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 700;
+      color: #a0aec0;
+      letter-spacing: 1px;
+    }
+
+    .comparison-table th:nth-child(2) { color: #68d391; }
+    .comparison-table th:nth-child(3) { color: #fc8181; }
+
+    .comparison-table tbody tr {
+      border-bottom: 1px solid #1a1a2e;
+      transition: background 0.2s;
+    }
+
+    .comparison-table tbody tr:hover {
+      background: #1e1e2e;
+    }
+
+    .comparison-table td {
+      padding: 16px 20px;
+      font-size: 15px;
+      background: #141420;
+    }
+
+    .comparison-table td:first-child {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .comparison-table td:nth-child(2) { color: #68d391; }
+    .comparison-table td:nth-child(3) { color: #a0aec0; }
+
+    .winner-badge {
+      display: inline-block;
+      background: #1a3a2a;
+      color: #68d391;
+      border: 1px solid #38a169;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    /* RECOMENDAÇÃO */
+    .recommendation-box {
+      background: linear-gradient(135deg, #1a2d4a, #0f2a3a);
+      border: 2px solid #4f8ef7;
+      border-radius: 16px;
+      padding: 36px;
+      text-align: center;
+    }
+
+    .recommendation-box .rec-label {
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: #4f8ef7;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .recommendation-box h2 {
+      font-size: 36px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 14px;
+      border: none;
+      padding: 0;
+    }
+
+    .recommendation-box p {
+      font-size: 17px;
+      color: #a0aec0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* PLANO DE AÇÃO */
+    .phase-block {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin-bottom: 16px;
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .phase-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #4f8ef7;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .phase-info h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .phase-info span {
+      font-size: 14px;
+      color: #4f8ef7;
+      font-weight: 600;
+    }
+
+    .action-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      color: #cbd5e0;
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #4a5568;
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* RESPONSÁVEIS */
+    .owners-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .owner-card {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 12px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .owner-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f8ef7, #764ba2);
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .owner-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .owner-role {
+      font-size: 14px;
+      color: #4f8ef7;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .owner-task {
+      font-size: 14px;
+      color: #718096;
+    }
+
+    /* PERGUNTAS DEMO */
+    .questions-group {
+      margin-bottom: 32px;
+    }
+
+    .questions-group h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #4f8ef7;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #2a2a3e;
+    }
+
+    .question-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #1a1a2e;
+      align-items: flex-start;
+    }
+
+    .question-item:last-child {
+      border-bottom: none;
+    }
+
+    .q-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1e2a4a;
+      border: 1px solid #4f8ef7;
+      color: #4f8ef7;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .q-text {
+      font-size: 16px;
+      color: #cbd5e0;
+      padding-top: 3px;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid #1a1a2e;
+      color: #4a5568;
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .problems-grid, .tools-grid, .owners-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="label">Relatório Estratégico</div>
+    <h1>CRM para Bilhon</h1>
+    <p>Análise completa da call + decisão + perguntas para demo HubSpot</p>
+  </div>
+
+  <div class="container">
+
+    <!-- DIAGNÓSTICO -->
+    <div class="section">
+      <div class="section-title">Situação Atual</div>
+      <h2>Diagnóstico</h2>
+      <div class="problems-grid">
+        <div class="problem-card">
+          <div class="icon">📵</div>
+          <h3>Ligações com número aleatório</h3>
+          <p>A Clint faz ligações por números desconhecidos. A taxa de atendimento ficou baixíssima. O time passou a usar celular pessoal.</p>
+        </div>
+        <div class="problem-card">
+          <div class="icon">📨</div>
+          <h3>Só envia template de mensagem</h3>
+          <p>Impossível mandar mensagem personalizada. O contato real com o lead acontece pelo WhatsApp pessoal das SDRs.</p>
+        </div>
+        <div class="problem-card">
+          <div class="icon">📊</div>
+          <h3>Métricas completamente erradas</h3>
+          <p>A Clint atribuía vendas do produto errado. Ninguém conseguia ver o número real de conversão.</p>
+        </div>
+        <div class="problem-card">
+          <div class="icon">📋</div>
+          <h3>A planilha virou o CRM real</h3>
+          <p>Todo o controle de leads, score e distribuição de SDR foi feito manualmente em Google Sheets. A Clint ficou para segundo plano.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FERRAMENTAS ATUAIS -->
+    <div class="section">
+      <div class="section-title">Stack atual</div>
+      <h2>14 ferramentas desconectadas</h2>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <span class="tool-name">Respondi</span>
+          <span class="tool-role">Formulário de aplicação</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Google Sheets</span>
+          <span class="tool-role">CRM real da operação</span>
+          <span class="tool-badge badge-replace">Substituir</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Clint</span>
+          <span class="tool-role">CRM oficial (subutilizado)</span>
+          <span class="tool-badge badge-replace">Substituir</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">WhatsApp</span>
+          <span class="tool-role">Contato SDR/Closer com leads</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Just Call</span>
+          <span class="tool-role">Ligações c/ número fixo + gravação</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Calendly</span>
+          <span class="tool-role">Agendamento de calls</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Google Meet</span>
+          <span class="tool-role">Calls com leads (substituir Zoom)</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Fireflies</span>
+          <span class="tool-role">Transcrição e IA nas calls</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Claude / ChatGPT</span>
+          <span class="tool-role">Geração de briefing pré-call</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Autentic</span>
+          <span class="tool-role">Assinatura de contratos</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Hotmart / Pix</span>
+          <span class="tool-role">Checkout e pagamento</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">ClickUp</span>
+          <span class="tool-role">OKRs e tarefas do time</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">API Meta</span>
+          <span class="tool-role">Disparo de WhatsApp</span>
+          <span class="tool-badge badge-keep">Manter</span>
+        </div>
+        <div class="tool-card">
+          <span class="tool-name">Zoom</span>
+          <span class="tool-role">Calls (será substituído)</span>
+          <span class="tool-badge badge-replace">Substituir</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- REQUISITOS -->
+    <div class="section">
+      <div class="section-title">O que o CRM precisa fazer</div>
+      <h2>Requisitos essenciais</h2>
+
+      <div class="req-block">
+        <h3><span class="dot"></span> Pipeline de vendas</h3>
+        <ul class="req-list">
+          <li>Kanban: Novo Lead → Contato SDR → Qualificado → Agendado → Follow-up → No-show → Fechado</li>
+          <li>Duas pipelines separadas: High Ticket (via aplicação) e Low Ticket (abandono de carrinho)</li>
+          <li>Sub-pipelines dentro de colunas (PipeDrive não tem isso)</li>
+          <li>Tags por origem: Imersão, Money Club, ADS, etc.</li>
+        </ul>
+      </div>
+
+      <div class="req-block">
+        <h3><span class="dot"></span> Automações críticas</h3>
+        <ul class="req-list">
+          <li>Lead entra → validação automática de CPF, CNPJ e número de WhatsApp</li>
+          <li>Score automático 0–100 (fervendo / quente / morno / frio) com base nos dados do formulário</li>
+          <li>Distribuição automática do lead para SDR por temperatura</li>
+          <li>Briefing da call gerado automaticamente por IA dentro do card (Claude + dados do lead + Instagram + NEPIC)</li>
+          <li>Contrato gerado automaticamente via Autentic ao fechar negócio</li>
+          <li>Onboarding via WhatsApp ativado após confirmação de pagamento</li>
+        </ul>
+      </div>
+
+      <div class="req-block">
+        <h3><span class="dot"></span> Dashboard de métricas reais</h3>
+        <ul class="req-list">
+          <li>Total de leads → contatados → atenderam → call marcada → call realizada → no-show → comprou</li>
+          <li>Visão por SDR, por temperatura do lead, por produto</li>
+          <li>OKRs automáticos: SDR 50–100 ligações/dia | Closer 5 calls/dia</li>
+        </ul>
+      </div>
+
+      <div class="req-block">
+        <h3><span class="dot"></span> Copiloto em tempo real nas calls (futuro)</h3>
+        <ul class="req-list">
+          <li>Ouve o cliente e o closer em tempo real via Fireflies</li>
+          <li>Sugere o que falar com base no NEPIC, temperatura e histórico do lead</li>
+          <li>Conectado ao banco de dados RAG da Bilhon</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- COMPARATIVO -->
+    <div class="section">
+      <div class="section-title">Análise</div>
+      <h2>HubSpot vs PipeDrive</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Critério</th>
+            <th>HubSpot ✦</th>
+            <th>PipeDrive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Integração WhatsApp / API Meta</td>
+            <td>Nativo e robusto</td>
+            <td>Via terceiros</td>
+          </tr>
+          <tr>
+            <td>Sub-pipelines dentro de colunas</td>
+            <td>Sim</td>
+            <td>Não possui</td>
+          </tr>
+          <tr>
+            <td>Score de lead nativo (0–100)</td>
+            <td>Sim, critérios customizados</td>
+            <td>Apenas via integração</td>
+          </tr>
+          <tr>
+            <td>Dashboard customizável</td>
+            <td>Completo</td>
+            <td>Limitado</td>
+          </tr>
+          <tr>
+            <td>API aberta para IA e automações</td>
+            <td>Sim</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <td>Fireflies / Just Call / Calendly</td>
+            <td>Integra</td>
+            <td>Integra</td>
+          </tr>
+          <tr>
+            <td>Múltiplas pipelines</td>
+            <td>Sim</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <td>Preço</td>
+            <td>Maior</td>
+            <td>Menor</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RECOMENDAÇÃO -->
+    <div class="section">
+      <div class="recommendation-box">
+        <div class="rec-label">Recomendação Final</div>
+        <h2>HubSpot <span class="winner-badge">Escolhido</span></h2>
+        <p>Para o volume, complexidade e ambição de automação da Bilhon, o HubSpot centraliza melhor tudo em um único card por lead. O diferencial crítico é o sub-pipeline dentro das colunas e o score nativo — que o PipeDrive não tem.</p>
+      </div>
+    </div>
+
+    <!-- PLANO DE AÇÃO -->
+    <div class="section">
+      <div class="section-title">Execução</div>
+      <h2>Plano de Ação</h2>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-number">1</div>
+          <div class="phase-info">
+            <h3>Até esta sexta-feira — 30% do processo</h3>
+            <span>Imediato</span>
+          </div>
+        </div>
+        <ul class="action-list">
+          <li><span class="checkbox"></span> Decisão final: confirmar HubSpot hoje</li>
+          <li><span class="checkbox"></span> Manter Clint pago por mais 1 mês — não arriscar a operação do Money Club que começa segunda</li>
+          <li><span class="checkbox"></span> Montar kanban base no HubSpot com as colunas do funil</li>
+          <li><span class="checkbox"></span> Conectar WhatsApp via API Meta</li>
+          <li><span class="checkbox"></span> Ativar score de lead (0–100) com critérios do formulário</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-number">2</div>
+          <div class="phase-info">
+            <h3>Semanas 2 e 3 — 100% do processo</h3>
+            <span>2–3 semanas</span>
+          </div>
+        </div>
+        <ul class="action-list">
+          <li><span class="checkbox"></span> Conectar todas as 14 ferramentas ao HubSpot</li>
+          <li><span class="checkbox"></span> Automatizar geração de briefing pré-call dentro do card via Claude</li>
+          <li><span class="checkbox"></span> Automatizar contrato via Autentic ao fechar</li>
+          <li><span class="checkbox"></span> Dashboard de métricas real funcionando</li>
+          <li><span class="checkbox"></span> OKRs do time conectados ao CRM (SDR: 50–100 ligações | Closer: 5 calls)</li>
+          <li><span class="checkbox"></span> Onboarding via WhatsApp ativado automaticamente após pagamento</li>
+        </ul>
+      </div>
+
+      <div class="owners-grid">
+        <div class="owner-card">
+          <div class="owner-avatar">I</div>
+          <div class="owner-name">Isaac</div>
+          <div class="owner-role">Organização</div>
+          <div class="owner-task">Estrutura do CRM, cards, colunas e organização geral</div>
+        </div>
+        <div class="owner-card">
+          <div class="owner-avatar">A</div>
+          <div class="owner-name">Aquila</div>
+          <div class="owner-role">Integrações</div>
+          <div class="owner-task">APIs, conexões, automações e integrações técnicas</div>
+        </div>
+        <div class="owner-card">
+          <div class="owner-avatar">P</div>
+          <div class="owner-name">Pessanha</div>
+          <div class="owner-role">Processo Comercial</div>
+          <div class="owner-task">Validação do fluxo e processo de vendas no CRM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERGUNTAS DEMO -->
+    <div class="section">
+      <div class="section-title">Demo HubSpot — Amanhã</div>
+      <h2>O que perguntar na call</h2>
+
+      <div class="questions-group">
+        <h3>Integrações críticas</h3>
+        <div class="question-item">
+          <span class="q-number">1</span>
+          <span class="q-text">Como funciona a integração nativa com WhatsApp via API Meta? Consigo enviar mensagem livre, não só template?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">2</span>
+          <span class="q-text">Tem integração com Just Call? Como funciona a gravação de ligação dentro do card do lead?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">3</span>
+          <span class="q-text">Integra com Fireflies para transcrição automática de calls diretamente no card?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">4</span>
+          <span class="q-text">Integra com Calendly e Google Meet? O agendamento cria o card automaticamente no CRM?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">5</span>
+          <span class="q-text">Tem integração com ClickUp para OKRs do time comercial?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">6</span>
+          <span class="q-text">Integra com Autentic para geração e assinatura de contratos?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">7</span>
+          <span class="q-text">Integra com Hotmart e Pix para confirmar pagamentos automaticamente dentro do card?</span>
+        </div>
+      </div>
+
+      <div class="questions-group">
+        <h3>Funcionalidades do CRM</h3>
+        <div class="question-item">
+          <span class="q-number">8</span>
+          <span class="q-text">Consigo criar múltiplas pipelines separadas para High Ticket e Low Ticket?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">9</span>
+          <span class="q-text">Consigo criar sub-pipelines ou expandir colunas em kanbans internos dentro de uma coluna?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">10</span>
+          <span class="q-text">O score de lead (0–100) é nativo? Consigo criar critérios totalmente customizados de pontuação?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">11</span>
+          <span class="q-text">Tags por origem do lead (Imersão, Money Club, ADS) são atribuídas automaticamente via webhook ou formulário?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">12</span>
+          <span class="q-text">Consigo criar sequências automáticas: lead entra → score → distribui para SDR → envia WhatsApp → move de coluna?</span>
+        </div>
+      </div>
+
+      <div class="questions-group">
+        <h3>Dados e Métricas</h3>
+        <div class="question-item">
+          <span class="q-number">13</span>
+          <span class="q-text">O dashboard mostra métricas de funil em tempo real: leads → contatados → calls → fechados?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">14</span>
+          <span class="q-text">Consigo criar visões filtradas por SDR, por temperatura do lead e por produto?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">15</span>
+          <span class="q-text">Como funciona a migração de dados do Google Sheets e da Clint para o HubSpot? Quanto tempo leva?</span>
+        </div>
+      </div>
+
+      <div class="questions-group">
+        <h3>Técnico e Preço</h3>
+        <div class="question-item">
+          <span class="q-number">16</span>
+          <span class="q-text">Qual o custo para nossa operação: quantos usuários precisamos, qual o volume de leads/mês suportado?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">17</span>
+          <span class="q-text">A API é aberta para conectar agentes de IA que escrevem automaticamente dentro dos cards?</span>
+        </div>
+        <div class="question-item">
+          <span class="q-number">18</span>
+          <span class="q-text">Tem limite de automações no plano? Qual plano cobre todas as funcionalidades listadas?</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Bilhon — Relatório CRM · Gerado por Claude Code
+  </div>
+
+</body>
+</html>
