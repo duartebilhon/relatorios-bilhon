@@ -578,6 +578,82 @@
       letter-spacing: 1px;
     }
 
+    /* ── TAREFAS ── */
+    .task-day { display: flex; flex-direction: column; gap: 0; }
+
+    .task-day-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .task-day-label {
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .task-day-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 76px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      transition: border-color .2s;
+    }
+
+    .task-item:hover { border-color: #333355; }
+
+    .task-owner {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .task-owner.aquila   { background: rgba(79,142,247,.15); color: var(--blue); border: 1px solid rgba(79,142,247,.3); }
+    .task-owner.duarte   { background: rgba(56,217,169,.12); color: var(--green); border: 1px solid rgba(56,217,169,.25); }
+    .task-owner.pessanha { background: rgba(253,126,20,.12); color: #fd7e14; border: 1px solid rgba(253,126,20,.25); }
+
+    .task-name {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .task-by {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 900px) {
       .cap-grid, .score-grid, .nepic-grid, .integrations-grid, .commands-grid { grid-template-columns: 1fr 1fr; }
@@ -1267,6 +1343,285 @@
         <span class="command-desc">Resumo da decisão HubSpot vs PipeDrive e todas as justificativas</span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── TAREFAS DE MIGRAÇÃO ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Roadmap Oficial</div>
+    <h2 class="section-title">Tarefas de Migração — pós-decisão HubSpot</h2>
+    <p class="section-sub">Definidas em grupo após a reunião de 12/03/2026. Aquila executa as configurações técnicas em paralelo com as validações e contratações do Duarte.</p>
+
+    <!-- LINHA DO TEMPO -->
+    <div style="display:flex;flex-direction:column;gap:32px;">
+
+      <!-- DIA 12/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">12/03</div>
+          <div class="task-day-title">Hoje — Início imediato</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Verificar API do HubSpot para mapear todas as métricas extraíveis</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 13/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">13/03</div>
+          <div class="task-day-title">Amanhã — Sprint de configuração</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Mapear automações que estão na Clint</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Migrar automações da Clint para o HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Configurar Pipeline da Imersão no HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Configurar Pipeline do Money Club no HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Informar lógica de qualificação dos leads ao time técnico</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+          <div class="task-item task-pessanha">
+            <div class="task-owner pessanha">PE</div>
+            <div class="task-content">
+              <div class="task-name">Enviar agente/chat e script utilizado para gerar scripts das calls</div>
+              <div class="task-by">Gustavo Pessanha</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 16/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">16/03</div>
+          <div class="task-day-title">Segunda-feira — Integrações</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Importar Tags para dentro do HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Criar integração com a Ticto</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 17/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">17/03</div>
+          <div class="task-day-title">Terça-feira — Migração de dados</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Migrar leads e contatos para o HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Migrar atividades da Clint para o HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Contratar HubSpot para a Bilhon — alinhar com Thiago</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 18/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">18/03</div>
+          <div class="task-day-title">Quarta-feira — Sprint final técnica + testes Duarte</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Integrar Fireflies ao HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Migrar Instagram do Thiago para o HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Construir fluxo de recebimento do formulário no N8N</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Construir lógica de qualificação dos leads</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Fluxo de envio dos leads para o HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Criar página de configuração de métricas</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Setup de usuários — criar usuários, times e permissões</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Testar pipelines e automações — Imersão e Money Club</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Verificar leads e atividades migrados no HubSpot</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 19/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">19/03</div>
+          <div class="task-day-title">Quinta-feira</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-aquila">
+            <div class="task-owner aquila">AQ</div>
+            <div class="task-content">
+              <div class="task-name">Script de Vendas dentro do HubSpot</div>
+              <div class="task-by">Aquila</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 24/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">24/03</div>
+          <div class="task-day-title">Segunda — Testes avançados</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Teste Fireflies e Instagram do Thiago no HubSpot</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 25/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">25/03</div>
+          <div class="task-day-title">Terça</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Teste integração formulário com HubSpot — incluindo qualificação automática de leads</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 26/03 -->
+      <div class="task-day">
+        <div class="task-day-header">
+          <div class="task-day-label">26/03</div>
+          <div class="task-day-title">Quarta — Go live completo</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item task-duarte">
+            <div class="task-owner duarte">DU</div>
+            <div class="task-content">
+              <div class="task-name">Teste Script de Vendas dentro de cada lead no HubSpot</div>
+              <div class="task-by">Duarte</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- fim timeline -->
   </div>
 </section>
 

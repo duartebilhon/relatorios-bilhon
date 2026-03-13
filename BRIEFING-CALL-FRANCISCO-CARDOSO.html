@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing Call — Francisco Cardoso</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: #1e1e2e;
+    --text: #f1f5f9;
+    --muted: #64748b;
+    --purple: #7c3aed;
+    --purple-light: #a855f7;
+    --gold: #f59e0b;
+    --green: #10b981;
+    --blue: #3b82f6;
+    --red: #ef4444;
+    --orange: #f97316;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0d0d1a 0%, #12122a 50%, #0d0d1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 20px; }
+  .avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .header-info h1 { font-size: 20px; font-weight: 700; }
+  .header-info p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .badge-quente {
+    background: rgba(245,158,11,0.15); color: var(--gold);
+    border: 1px solid rgba(245,158,11,0.3);
+    padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .btn-pdf {
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    color: #fff; border: none; padding: 10px 20px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .2s;
+  }
+  .btn-pdf:hover { opacity: .85; }
+
+  /* TIMER */
+  .timer-bar {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 10px 40px; display: flex; align-items: center; gap: 24px;
+  }
+  .timer-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .timer-display {
+    font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums;
+    color: var(--green); font-family: monospace;
+  }
+  .phase-indicator {
+    font-size: 12px; font-weight: 600; color: var(--purple-light);
+    background: rgba(124,58,237,0.12); padding: 4px 14px; border-radius: 20px;
+    border: 1px solid rgba(124,58,237,0.25);
+  }
+  .timer-btns { display: flex; gap: 8px; margin-left: auto; }
+  .timer-btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 6px 14px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s;
+  }
+  .timer-btn:hover { border-color: var(--purple); color: var(--purple-light); }
+  .timer-btn.active { background: var(--green); border-color: var(--green); color: #000; }
+
+  /* MAIN */
+  .main { max-width: 1100px; margin: 0 auto; padding: 32px 40px; }
+
+  /* PERFIL */
+  .profile-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin-bottom: 32px;
+  }
+  .profile-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+  }
+  .profile-card.highlight { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.05); }
+  .profile-card h3 {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); margin-bottom: 12px; font-weight: 600;
+  }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .stat-row:last-child { margin-bottom: 0; }
+  .stat-label { font-size: 12px; color: var(--muted); }
+  .stat-value { font-size: 13px; font-weight: 600; }
+  .stat-value.green { color: var(--green); }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.blue { color: var(--blue); }
+  .stat-value.purple { color: var(--purple-light); }
+  .vgv-value { font-size: 28px; font-weight: 800; color: var(--gold); line-height: 1; }
+  .vgv-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* INSIGHT BOX */
+  .insight-box {
+    background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.25);
+    border-left: 4px solid var(--purple); border-radius: 8px;
+    padding: 16px 20px; margin-bottom: 32px;
+  }
+  .insight-box h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--purple-light); margin-bottom: 8px; }
+  .insight-box p { font-size: 13px; color: #c4b5fd; line-height: 1.7; }
+
+  /* FORMULÁRIO */
+  .form-quote {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-left: 4px solid var(--blue); border-radius: 8px;
+    padding: 16px 20px; margin-bottom: 32px;
+  }
+  .form-quote h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 10px; }
+  .form-quote blockquote { font-size: 13px; color: #bfdbfe; line-height: 1.7; font-style: italic; }
+  .form-quote .why { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .form-quote .why-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
+  .form-quote .why-text { font-size: 13px; color: var(--green); font-style: italic; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); font-weight: 700; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* PHASES */
+  .phases { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .phase {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .phase-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px; cursor: pointer; transition: background .2s;
+    user-select: none;
+  }
+  .phase-header:hover { background: var(--surface2); }
+  .phase-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; flex-shrink: 0;
+  }
+  .phase-meta { flex: 1; }
+  .phase-name { font-size: 14px; font-weight: 700; }
+  .phase-time { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .phase-chevron { color: var(--muted); font-size: 14px; transition: transform .3s; }
+  .phase.open .phase-chevron { transform: rotate(180deg); }
+  .phase-body { display: none; padding: 0 20px 20px; border-top: 1px solid var(--border); }
+  .phase.open .phase-body { display: block; }
+
+  /* Colors per phase */
+  .phase-rapport .phase-num { background: rgba(16,185,129,0.15); color: var(--green); }
+  .phase-rapport .phase-header { border-left: 3px solid var(--green); }
+  .phase-situacao .phase-num { background: rgba(59,130,246,0.15); color: var(--blue); }
+  .phase-situacao .phase-header { border-left: 3px solid var(--blue); }
+  .phase-problema .phase-num { background: rgba(249,115,22,0.15); color: var(--orange); }
+  .phase-problema .phase-header { border-left: 3px solid var(--orange); }
+  .phase-implicacao .phase-num { background: rgba(239,68,68,0.15); color: var(--red); }
+  .phase-implicacao .phase-header { border-left: 3px solid var(--red); }
+  .phase-necessidade .phase-num { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .phase-necessidade .phase-header { border-left: 3px solid var(--gold); }
+  .phase-apresentacao .phase-num { background: rgba(124,58,237,0.15); color: var(--purple-light); }
+  .phase-apresentacao .phase-header { border-left: 3px solid var(--purple); }
+  .phase-fechamento .phase-num { background: rgba(16,185,129,0.15); color: var(--green); }
+  .phase-fechamento .phase-header { border-left: 3px solid var(--green); }
+
+  /* QUESTIONS */
+  .q-list { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .q-item {
+    background: var(--surface2); border-radius: 8px; padding: 14px 16px;
+    border-left: 3px solid transparent; font-size: 13px; line-height: 1.7;
+    color: #e2e8f0;
+  }
+  .q-item.green { border-color: var(--green); }
+  .q-item.blue { border-color: var(--blue); }
+  .q-item.orange { border-color: var(--orange); }
+  .q-item.red { border-color: var(--red); }
+  .q-item.gold { border-color: var(--gold); }
+  .q-item.purple { border-color: var(--purple); }
+  .q-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+    font-weight: 700; margin-bottom: 6px;
+  }
+  .q-label.green { color: var(--green); }
+  .q-label.blue { color: var(--blue); }
+  .q-label.orange { color: var(--orange); }
+  .q-label.red { color: var(--red); }
+  .q-label.gold { color: var(--gold); }
+  .q-label.purple { color: var(--purple-light); }
+  .q-text { font-style: italic; }
+  .tip-box {
+    margin-top: 14px; background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2); border-radius: 8px;
+    padding: 12px 14px; font-size: 12px; color: #6ee7b7;
+  }
+  .tip-box strong { color: var(--green); }
+
+  /* ANCORAS */
+  .anchor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .anchor-item {
+    background: var(--surface2); border-radius: 8px; padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .anchor-num {
+    display: inline-block; background: rgba(124,58,237,0.2); color: var(--purple-light);
+    width: 22px; height: 22px; border-radius: 50%;
+    font-size: 11px; font-weight: 800; text-align: center; line-height: 22px;
+    margin-bottom: 8px;
+  }
+  .anchor-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .anchor-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* OBJEÇÕES */
+  .obj-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+  .obj-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden;
+  }
+  .obj-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 18px; cursor: pointer; transition: background .2s;
+  }
+  .obj-header:hover { background: var(--surface2); }
+  .obj-icon { font-size: 16px; flex-shrink: 0; }
+  .obj-q { font-size: 13px; font-weight: 600; flex: 1; }
+  .obj-chevron { color: var(--muted); font-size: 13px; transition: transform .3s; }
+  .obj-item.open .obj-chevron { transform: rotate(180deg); }
+  .obj-body { display: none; padding: 0 18px 16px; }
+  .obj-item.open .obj-body { display: block; border-top: 1px solid var(--border); padding-top: 14px; }
+  .obj-resp {
+    font-size: 13px; color: #bfdbfe; font-style: italic; line-height: 1.7;
+    background: rgba(59,130,246,0.06); border-left: 3px solid var(--blue);
+    border-radius: 6px; padding: 12px 14px;
+  }
+  .obj-tip { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  /* DOWNSELL */
+  .downsell-box {
+    background: var(--surface); border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 12px; padding: 24px; margin-bottom: 32px;
+  }
+  .downsell-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .downsell-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(245,158,11,0.15); display: flex; align-items: center;
+    justify-content: center; font-size: 20px; flex-shrink: 0;
+  }
+  .downsell-title { font-size: 16px; font-weight: 800; color: var(--gold); }
+  .downsell-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .downsell-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .d-item { display: flex; align-items: flex-start; gap: 10px; }
+  .d-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: 6px; flex-shrink: 0; }
+  .d-text { font-size: 13px; color: #e2e8f0; }
+  .downsell-script {
+    background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.2);
+    border-left: 3px solid var(--gold); border-radius: 8px; padding: 14px 16px;
+    font-size: 13px; color: #fde68a; font-style: italic; line-height: 1.7;
+  }
+
+  /* LINKS */
+  .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 40px; }
+  .link-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px;
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--text); transition: border-color .2s;
+  }
+  .link-card:hover { border-color: var(--purple); }
+  .link-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .link-title { font-size: 13px; font-weight: 700; }
+  .link-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* INSTAGRAM SIGNALS */
+  .signals-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+  .signal-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .signal-emoji { font-size: 20px; margin-bottom: 8px; }
+  .signal-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .signal-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* DECISOR WARNING */
+  .warning-box {
+    background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25);
+    border-left: 4px solid var(--red); border-radius: 8px;
+    padding: 14px 18px; margin-bottom: 32px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .warning-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .warning-text { font-size: 13px; color: #fca5a5; line-height: 1.6; }
+  .warning-text strong { color: var(--red); }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 40px; text-align: center;
+    font-size: 11px; color: var(--muted);
+  }
+
+  @media print {
+    .header { position: static; }
+    .timer-bar { display: none; }
+    .btn-pdf { display: none; }
+    .phase-body { display: block !important; }
+    .obj-body { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="avatar">FC</div>
+    <div class="header-info">
+      <h1>Francisco Cardoso</h1>
+      <p>Master Developer · Parcelamento de Solo · Porto Alegre, RS</p>
+    </div>
+    <span class="badge-quente">🔥 Quente — 75pts</span>
+  </div>
+  <div class="header-right">
+    <button class="btn-pdf" onclick="window.print()">⬇ Salvar como PDF</button>
+  </div>
+</div>
+
+<!-- TIMER BAR -->
+<div class="timer-bar">
+  <span class="timer-label">Duração</span>
+  <span class="timer-display" id="timer">00:00</span>
+  <span class="phase-indicator" id="phaseLabel">Aguardando início</span>
+  <div class="timer-btns">
+    <button class="timer-btn active" id="btnStart" onclick="toggleTimer()">▶ Iniciar</button>
+    <button class="timer-btn" onclick="resetTimer()">↺ Resetar</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PERFIL -->
+  <div class="section-title">Perfil do Lead</div>
+  <div class="profile-grid">
+    <div class="profile-card">
+      <h3>Dados do Lead</h3>
+      <div class="stat-row"><span class="stat-label">Empresa</span><span class="stat-value blue">Master Developer</span></div>
+      <div class="stat-row"><span class="stat-label">Faturamento</span><span class="stat-value green">R$1M – R$3M/ano</span></div>
+      <div class="stat-row"><span class="stat-label">Colaboradores</span><span class="stat-value">16–30 pessoas</span></div>
+      <div class="stat-row"><span class="stat-label">Cargo</span><span class="stat-value gold">Dono + Sócio</span></div>
+      <div class="stat-row"><span class="stat-label">SDR</span><span class="stat-value">Mariana</span></div>
+      <div class="stat-row"><span class="stat-label">Closer</span><span class="stat-value purple">Duarte</span></div>
+    </div>
+    <div class="profile-card highlight">
+      <h3>Track Record da Empresa</h3>
+      <div class="vgv-value">R$ 2,4 Bi</div>
+      <div class="vgv-label">em VGV — Condomínios fechados, loteamentos e comunidades planejadas</div>
+      <div style="margin-top:16px;">
+        <div class="stat-row"><span class="stat-label">Nicho</span><span class="stat-value gold">Parcelamento de Solo</span></div>
+        <div class="stat-row"><span class="stat-label">Modelo</span><span class="stat-value">Developer + Advisory 360°</span></div>
+        <div class="stat-row"><span class="stat-label">Floripa</span><span class="stat-value green">✓ Sim, sem dúvida!</span></div>
+        <div class="stat-row"><span class="stat-label">Investir 100k</span><span class="stat-value green">✓ Claro! Imediatamente!</span></div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <h3>Sinais do Instagram</h3>
+      <div class="stat-row"><span class="stat-label">@</span><span class="stat-value blue">franciscocardosoofficial</span></div>
+      <div class="stat-row"><span class="stat-label">Perfil</span><span class="stat-value">Verificado · 3.8k seguidores</span></div>
+      <div class="stat-row"><span class="stat-label">Valores</span><span class="stat-value">Fé · Família · Legado</span></div>
+      <div class="stat-row"><span class="stat-label">Eventos</span><span class="stat-value gold">II 360° Imobiliário (2 dias)</span></div>
+      <div class="stat-row"><span class="stat-label">Viagens</span><span class="stat-value">Brasília · EUA · Gramado</span></div>
+      <div class="stat-row"><span class="stat-label">Mentalidade</span><span class="stat-value">Águia voa com águia</span></div>
+    </div>
+  </div>
+
+  <!-- INSIGHT -->
+  <div class="insight-box">
+    <h3>⚡ Leitura Estratégica — leia antes de entrar na call</h3>
+    <p><strong style="color:#c4b5fd;">Ele não é iniciante em IA.</strong> O formulário deixa claro: a Master Developer já está implementando IA internamente. Ele não precisa ser convencido sobre o valor da tecnologia — ele já decidiu. O seu trabalho é <strong style="color:#c4b5fd;">posicionar a Imersão como o atalho mais inteligente</strong> para o que ele já está tentando construir. Não venda o básico. Venda a aceleração com método validado, comunidade de alto nível e configuração personalizada para a operação dele.</p>
+  </div>
+
+  <!-- FORMULÁRIO -->
+  <div class="form-quote">
+    <h3>📝 O que ele escreveu no formulário (ouça isso)</h3>
+    <blockquote>"A Master Developer é uma empresa de estruturação e desenvolvimento de negócios imobiliários, que atua como developer e advisory cobrindo 360° end-to-end da operação [...] com track record superior a R$ 2,4 bilhões de VGV. <strong style="color:#93c5fd;">Hoje estamos implementando IA em todos os processos para transformar nosso método em um sistema escalável (segundo cérebro + agentes), acelerando diagnóstico, decisão e execução com padronização e rastreabilidade.</strong>"</blockquote>
+    <div class="why">
+      <div class="why-label">Por que quer o AIOS</div>
+      <div class="why-text">"Vou conseguir implantar todos os processos com controladoria, governança e compliance end-to-end 360º na operação."</div>
+    </div>
+  </div>
+
+  <!-- SINAIS DO INSTAGRAM -->
+  <div class="section-title">Leitura de Perfil — Instagram</div>
+  <div class="signals-grid">
+    <div class="signal-item">
+      <div class="signal-emoji">✝️</div>
+      <div class="signal-title">Fé e Propósito</div>
+      <div class="signal-desc">Posts sobre "Entrega ao Senhor", "The King of Kings", "Descanse em Deus". Homem movido por legado e missão, não só resultado financeiro.</div>
+    </div>
+    <div class="signal-item">
+      <div class="signal-emoji">👨‍👧</div>
+      <div class="signal-title">Família no Centro</div>
+      <div class="signal-desc">Fotos com filha, esposa. Decisões carregam peso emocional além do racional. Legado familiar é motivador.</div>
+    </div>
+    <div class="signal-item">
+      <div class="signal-emoji">🦅</div>
+      <div class="signal-title">Mentalidade Elite</div>
+      <div class="signal-desc">"Águia voa com águia", "O sucesso é treinável", "Você é a média das 5 pessoas que mais convive." Ele se vê como player de nível alto.</div>
+    </div>
+    <div class="signal-item">
+      <div class="signal-emoji">🏛️</div>
+      <div class="signal-title">Alcance Nacional</div>
+      <div class="signal-desc">Highlight "Brasília" e "Infra Brasil" — opera em nível federal, provavelmente licenciamentos e lobby.</div>
+    </div>
+    <div class="signal-item">
+      <div class="signal-emoji">🎤</div>
+      <div class="signal-title">Já frequenta eventos de 2 dias</div>
+      <div class="signal-desc">Participou do II 360° (Inteligência Imobiliária) — evento presencial de 2 dias. Acostumado a pagar por transformação presencial.</div>
+    </div>
+    <div class="signal-item">
+      <div class="signal-emoji">🌍</div>
+      <div class="signal-title">Expansão internacional</div>
+      <div class="signal-desc">Viagem aos EUA, estudo de mercado em Gramado/Canela. Mentalidade de escala, não de manutenção.</div>
+    </div>
+  </div>
+
+  <!-- AVISO DECISOR -->
+  <div class="warning-box">
+    <div class="warning-icon">⚠️</div>
+    <div class="warning-text"><strong>Atenção — Ele tem sócio.</strong> Pode surgir a objeção "preciso falar com meu sócio". Esteja preparado. A resposta: <em>"Faz sentido. Mas você, como dono, está convicto? Se você estiver, o sócio valida — não decide. O que faria você ir sem precisar de validação externa?"</em></div>
+  </div>
+
+  <!-- FASES DA CALL -->
+  <div class="section-title">Fases da Call — SPIN Selling</div>
+  <div class="phases">
+
+    <!-- RAPPORT -->
+    <div class="phase phase-rapport" id="p1">
+      <div class="phase-header" onclick="togglePhase('p1')">
+        <div class="phase-num">1</div>
+        <div class="phase-meta">
+          <div class="phase-name">Rapport</div>
+          <div class="phase-time">2–3 minutos</div>
+        </div>
+        <span class="phase-chevron">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="q-list">
+          <div class="q-item green">
+            <div class="q-label green">Abertura — II 360°</div>
+            <div class="q-text">"Francisco, vi que você esteve no evento de Inteligência Imobiliária 360°. Como foi? O que você trouxe de lá de mais relevante?"</div>
+          </div>
+          <div class="q-item green">
+            <div class="q-label green">Abertura — Gramado</div>
+            <div class="q-text">"Vi também que você está de olho no mercado de Gramado e Canela. Está mapeando algum projeto por lá?"</div>
+          </div>
+        </div>
+        <div class="tip-box">
+          <strong>Dica:</strong> Deixe ele falar. Quanto mais ele fala no rapport, mais abertura você tem nas próximas fases. O II 360° é um gancho perfeito — ele já sabe o valor de 2 dias presenciais intensivos.
+        </div>
+      </div>
+    </div>
+
+    <!-- SITUAÇÃO -->
+    <div class="phase phase-situacao" id="p2">
+      <div class="phase-header" onclick="togglePhase('p2')">
+        <div class="phase-num">2</div>
+        <div class="phase-meta">
+          <div class="phase-name">Situação (S)</div>
+          <div class="phase-time">5–7 minutos</div>
+        </div>
+        <span class="phase-chevron">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="q-list">
+          <div class="q-item blue">
+            <div class="q-label blue">Situação atual com IA</div>
+            <div class="q-text">"Você falou no formulário que já está implementando IA nos processos. Me conta como está esse movimento hoje — o que já está rodando de verdade?"</div>
+          </div>
+          <div class="q-item blue">
+            <div class="q-label blue">Mapeamento da operação</div>
+            <div class="q-text">"Dentro das etapas end-to-end da Master Developer — Go/No-Go, licenciamento, lançamento, recebíveis, gestão de stakeholders — em qual delas a IA já entrou? E em qual você sente mais travamento?"</div>
+          </div>
+          <div class="q-item blue">
+            <div class="q-label blue">Segundo cérebro</div>
+            <div class="q-text">"Você mencionou 'segundo cérebro + agentes'. Isso já existe de alguma forma hoje, ou ainda está na fase de estruturação?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLEMA -->
+    <div class="phase phase-problema" id="p3">
+      <div class="phase-header" onclick="togglePhase('p3')">
+        <div class="phase-num">3</div>
+        <div class="phase-meta">
+          <div class="phase-name">Problema (P)</div>
+          <div class="phase-time">5–7 minutos</div>
+        </div>
+        <span class="phase-chevron">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="q-list">
+          <div class="q-item orange">
+            <div class="q-label orange">Gargalo principal</div>
+            <div class="q-text">"Com uma operação da complexidade da Master Developer — R$2,4 bilhões de VGV, multidisciplinar — qual é o maior gargalo hoje que está impedindo a escala real? É gente, processo ou falta de sistema?"</div>
+          </div>
+          <div class="q-item orange">
+            <div class="q-label orange">Decisão e diagnóstico</div>
+            <div class="q-text">"Quanto tempo você e sua equipe gastam hoje em diagnóstico e decisão — o Go/No-Go, viabilidade, análise — comparado com o que poderia ser com um sistema de IA rodando?"</div>
+          </div>
+          <div class="q-item orange">
+            <div class="q-label orange">Padronização</div>
+            <div class="q-text">"Você falou em rastreabilidade e padronização. Hoje, se você precisasse replicar a metodologia da Master Developer para um novo projeto em outra cidade, quanto tempo isso levaria?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPLICAÇÃO -->
+    <div class="phase phase-implicacao" id="p4">
+      <div class="phase-header" onclick="togglePhase('p4')">
+        <div class="phase-num">4</div>
+        <div class="phase-meta">
+          <div class="phase-name">Implicação (I)</div>
+          <div class="phase-time">5–8 minutos</div>
+        </div>
+        <span class="phase-chevron">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="q-list">
+          <div class="q-item red">
+            <div class="q-label red">Custo da inação</div>
+            <div class="q-text">"Se você continuar construindo esse sistema internamente, sem uma metodologia já validada, qual é a sua estimativa realista de tempo para ter isso rodando com governança e compliance de verdade?"</div>
+          </div>
+          <div class="q-item red">
+            <div class="q-label red">Vantagem competitiva</div>
+            <div class="q-text">"O mercado imobiliário está mudando rápido. O developer que chegar primeiro com um sistema de IA no Go/No-Go e na gestão de stakeholders vai ter uma vantagem brutal na captação de terrenos. Você sente essa pressão vindo?"</div>
+          </div>
+          <div class="q-item red">
+            <div class="q-label red">Valor do sistema pronto</div>
+            <div class="q-text">"Você falou em compliance e controladoria end-to-end — isso quase vira um produto em si. Se você tivesse isso funcionando agora, quanto isso valeria em novos empreendimentos aprovados mais rápido ou em atração de VGV adicional?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NECESSIDADE -->
+    <div class="phase phase-necessidade" id="p5">
+      <div class="phase-header" onclick="togglePhase('p5')">
+        <div class="phase-num">5</div>
+        <div class="phase-meta">
+          <div class="phase-name">Necessidade (N)</div>
+          <div class="phase-time">3–5 minutos</div>
+        </div>
+        <span class="phase-chevron">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="q-list">
+          <div class="q-item gold">
+            <div class="q-label gold">Crystallizar a necessidade</div>
+            <div class="q-text">"Então o que você precisa, na prática, é de uma metodologia que já foi testada em operações complexas — não um curso genérico de IA, mas configuração real para as etapas da Master Developer. É isso?"</div>
+          </div>
+          <div class="q-item gold">
+            <div class="q-label gold">Urgência de saída</div>
+            <div class="q-text">"Se você saísse de Floripa com os agentes configurados especificamente para o Go/No-Go, gestão de stakeholders e governança da Master Developer — o quanto isso aceleraria o que você já quer construir?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APRESENTAÇÃO -->
+    <div class="phase phase-apresentacao" id="p6">
+      <div class="phase-header" onclick="togglePhase('p6')">
+        <div class="phase-num">6</div>
+        <div class="phase-meta">
+          <div class="phase-name">Apresentação</div>
+          <div class="phase-time">5–7 minutos</div>
+        </div>
+        <span class="phase-chevron">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="anchor-grid">
+          <div class="anchor-item">
+            <div class="anchor-num">1</div>
+            <div class="anchor-title">Personalizado para o DNA dele</div>
+            <div class="anchor-desc">Entrevista prévia no WhatsApp captura história, processos e desafios da Master Developer. Os agentes são configurados para a operação dele — não um template genérico.</div>
+          </div>
+          <div class="anchor-item">
+            <div class="anchor-num">2</div>
+            <div class="anchor-title">Alan Nikolas & Thiago Finch direto</div>
+            <div class="anchor-desc">Dois anos construindo sistemas de IA para empresas de alta complexidade. Acesso direto aos criadores da metodologia — não a facilitadores intermediários.</div>
+          </div>
+          <div class="anchor-item">
+            <div class="anchor-num">3</div>
+            <div class="anchor-title">Comunidade de alto nível</div>
+            <div class="anchor-desc">20 empresários, faturamento mínimo 500k. Para quem pensa "águia voa com águia" — o networking já paga o investimento. Ele já foi ao II 360°, sabe o valor disso.</div>
+          </div>
+          <div class="anchor-item">
+            <div class="anchor-num">4</div>
+            <div class="anchor-title">2 dias em Floripa = sistema rodando</div>
+            <div class="anchor-desc">Não é teoria. Não é slide. Ele sai com funcionários virtuais de IA configurados, testados, rodando na operação. O ROI começa no dia seguinte.</div>
+          </div>
+        </div>
+        <div class="tip-box" style="margin-top:14px;">
+          <strong>Ângulo específico para Francisco:</strong> "A Master Developer tem uma metodologia própria de 2,4 bilhões de VGV. O que a Imersão faz é transformar essa metodologia em um sistema de IA — rastreável, escalável, replicável. Você não vai aprender IA genérica. Você vai codificar o seu método."
+        </div>
+      </div>
+    </div>
+
+    <!-- FECHAMENTO -->
+    <div class="phase phase-fechamento" id="p7">
+      <div class="phase-header" onclick="togglePhase('p7')">
+        <div class="phase-num">7</div>
+        <div class="phase-meta">
+          <div class="phase-name">Fechamento</div>
+          <div class="phase-time">3–5 minutos</div>
+        </div>
+        <span class="phase-chevron">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="q-list">
+          <div class="q-item green">
+            <div class="q-label green">Pergunta de fechamento</div>
+            <div class="q-text">"Francisco, dado tudo que você me contou — a operação complexa, o movimento de IA que você já iniciou, e a necessidade de ter isso com governança real — faz sentido pra você estar em Floripa?"</div>
+          </div>
+        </div>
+        <div class="tip-box" style="margin-top:14px; background:rgba(16,185,129,0.12); border-color:rgba(16,185,129,0.3);">
+          <strong>Se sim:</strong> "Perfeito. Vou te enviar o contrato agora, enquanto estamos na call." — <strong>NÃO desligue antes de enviar o contrato + link de pagamento.</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OBJEÇÕES -->
+  <div class="section-title">Mapa de Objeções</div>
+  <div class="obj-list">
+
+    <div class="obj-item" id="o1">
+      <div class="obj-header" onclick="toggleObj('o1')">
+        <span class="obj-icon">🤝</span>
+        <span class="obj-q">"Preciso falar com meu sócio"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-resp">"Faz total sentido. Mas me diz — você, como dono, está convicto disso? Porque se você está, o papel do sócio é validar, não decidir. O que faria você ir sem precisar de validação externa?"</div>
+        <div class="obj-tip">Se ele hesitar: "Posso incluir o seu sócio em uma call rápida de 15 minutos agora ou ainda hoje para esclarecer qualquer dúvida. Faz sentido?"</div>
+      </div>
+    </div>
+
+    <div class="obj-item" id="o2">
+      <div class="obj-header" onclick="toggleObj('o2')">
+        <span class="obj-icon">🤖</span>
+        <span class="obj-q">"Já estamos implementando IA internamente"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-resp">"Ótimo — isso significa que você vai aproveitar ainda mais, porque não vai perder tempo com o básico. A diferença é que em vez de testar com o seu tempo e custo, você sai com um sistema que já foi validado em dezenas de operações. Quanto tempo você estima economizar com isso?"</div>
+        <div class="obj-tip">Ele é o cliente que mais se beneficia — já tem o contexto, vai configurar na profundidade certa.</div>
+      </div>
+    </div>
+
+    <div class="obj-item" id="o3">
+      <div class="obj-header" onclick="toggleObj('o3')">
+        <span class="obj-icon">💰</span>
+        <span class="obj-q">"R$100k é muito"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-resp">"Com um VGV de R$2,4 bilhões, você sabe melhor que ninguém que o custo de uma decisão errada — ou de um processo lento no Go/No-Go — é muito maior do que isso. A pergunta real não é o valor da Imersão. É: quanto custa continuar sem esse sistema por mais 12 meses?"</div>
+        <div class="obj-tip">Se persistir → acionar downsell CoHort (R$24.888). Veja seção abaixo.</div>
+      </div>
+    </div>
+
+    <div class="obj-item" id="o4">
+      <div class="obj-header" onclick="toggleObj('o4')">
+        <span class="obj-icon">⏱️</span>
+        <span class="obj-q">"Não sei se 2 dias resolve"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-resp">"Você foi ao II 360° — dois dias intensivos no imobiliário. O que você trouxe de lá? A Imersão AIOS é o mesmo princípio: imersão focada, com entrega prática. Você não sai com slides. Sai com sistema rodando."</div>
+        <div class="obj-tip">Esse ângulo é perfeito para Francisco — ele já viveu a experiência de um evento de 2 dias transformador no próprio setor.</div>
+      </div>
+    </div>
+
+    <div class="obj-item" id="o5">
+      <div class="obj-header" onclick="toggleObj('o5')">
+        <span class="obj-icon">🏗️</span>
+        <span class="obj-q">"IA não funciona para imobiliário de alta complexidade"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-resp">"Na verdade, é o contrário. Operações complexas com muitas variáveis, stakeholders e etapas são as que mais se beneficiam de agentes de IA — exatamente porque têm muito a padronizar e rastrear. Você mesmo descreveu isso no formulário: diagnóstico, decisão, execução com rastreabilidade. Isso é o que os agentes fazem."</div>
+        <div class="obj-tip">Usar a própria linguagem dele do formulário é muito poderoso aqui.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DOWNSELL -->
+  <div class="section-title">Plano B — Se não fechar Imersão</div>
+  <div class="downsell-box">
+    <div class="downsell-header">
+      <div class="downsell-icon">🎓</div>
+      <div>
+        <div class="downsell-title">CoHort AIOS Advanced</div>
+        <div class="downsell-subtitle">R$ 24.888 · 8 semanas intensivas · 80+ agentes configurados</div>
+      </div>
+    </div>
+    <div class="downsell-grid">
+      <div class="d-item"><div class="d-dot"></div><div class="d-text">8 semanas com projeto indo para produção real</div></div>
+      <div class="d-item"><div class="d-dot"></div><div class="d-text">80+ agentes especializados configurados</div></div>
+      <div class="d-item"><div class="d-dot"></div><div class="d-text">Profundidade técnica — não apenas 2 dias</div></div>
+      <div class="d-item"><div class="d-dot"></div><div class="d-text">Certificação "Maestro da IA" ao final</div></div>
+      <div class="d-item"><div class="d-dot"></div><div class="d-text">Acompanhamento semanal com mentores</div></div>
+      <div class="d-item"><div class="d-dot"></div><div class="d-text">Copy Squad, Data Squad, Design Squad</div></div>
+    </div>
+    <div class="downsell-script">"Francisco, entendo. Deixa eu te apresentar uma segunda opção que pode ser o caminho ideal — inclusive tecnicamente mais profundo para o que você quer. Você falou em rastreabilidade e governança: o CoHort tem 8 semanas justamente para construir isso com acompanhamento semanal. Você sairia com o sistema da Master Developer documentado, testado e em produção."</div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="section-title">Links da Call</div>
+  <div class="links-grid">
+    <a class="link-card" href="https://duartebilhon.github.io/PAGINA-IMERS-O-AIOS/IMERSAO-AIOS-APRESENTACAO.html" target="_blank">
+      <div class="link-icon" style="background:rgba(124,58,237,0.15);">🚀</div>
+      <div>
+        <div class="link-title">Apresentação — Imersão AIOS</div>
+        <div class="link-desc">Página do cliente · Compartilhar na call</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://duartebilhon.github.io/PAGINA-IMERS-O-AIOS/" target="_blank">
+      <div class="link-icon" style="background:rgba(16,185,129,0.15);">📋</div>
+      <div>
+        <div class="link-title">Página Principal AIOS</div>
+        <div class="link-desc">Hub central com todos os materiais</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://www.academialendaria.ai/advanced" target="_blank">
+      <div class="link-icon" style="background:rgba(245,158,11,0.15);">🎓</div>
+      <div>
+        <div class="link-title">CoHort AIOS Advanced</div>
+        <div class="link-desc">Downsell · R$24.888 · 8 semanas</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://masterdeveloper.imb.br" target="_blank">
+      <div class="link-icon" style="background:rgba(59,130,246,0.15);">🏗️</div>
+      <div>
+        <div class="link-title">Master Developer</div>
+        <div class="link-desc">Site do cliente · Referência durante a call</div>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Briefing gerado para Duarte · Imersão AIOS 2026 · Florianópolis
+</div>
+
+<script>
+  // TIMER
+  let seconds = 0, running = false, interval;
+  const phases = [
+    { max: 180, label: "Rapport" },
+    { max: 600, label: "Situação (S)" },
+    { max: 1020, label: "Problema (P)" },
+    { max: 1500, label: "Implicação (I)" },
+    { max: 1800, label: "Necessidade (N)" },
+    { max: 2220, label: "Apresentação" },
+    { max: 9999, label: "Fechamento" }
+  ];
+  function getPhase(s) {
+    for (let p of phases) if (s < p.max) return p.label;
+    return "Finalização";
+  }
+  function pad(n) { return String(n).padStart(2,'0'); }
+  function updateDisplay() {
+    const m = Math.floor(seconds/60), s = seconds%60;
+    document.getElementById('timer').textContent = pad(m)+':'+pad(s);
+    document.getElementById('phaseLabel').textContent = getPhase(seconds);
+    const el = document.getElementById('timer');
+    if (seconds > 2700) el.style.color = '#ef4444';
+    else if (seconds > 2100) el.style.color = '#f59e0b';
+    else el.style.color = '#10b981';
+  }
+  function toggleTimer() {
+    const btn = document.getElementById('btnStart');
+    if (running) {
+      clearInterval(interval); running = false;
+      btn.textContent = '▶ Retomar'; btn.classList.remove('active');
+    } else {
+      interval = setInterval(() => { seconds++; updateDisplay(); }, 1000);
+      running = true; btn.textContent = '⏸ Pausar'; btn.classList.add('active');
+    }
+  }
+  function resetTimer() {
+    clearInterval(interval); running = false; seconds = 0; updateDisplay();
+    const btn = document.getElementById('btnStart');
+    btn.textContent = '▶ Iniciar'; btn.classList.add('active');
+  }
+
+  // PHASES
+  function togglePhase(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  // OBJECTIONS
+  function toggleObj(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  // Open first phase by default
+  document.getElementById('p1').classList.add('open');
+</script>
+</body>
+</html>

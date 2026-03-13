@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing — Samuel | Call 10/03 11h</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a227;
+    --gold-light: #e8c04a;
+    --gold-dim: rgba(201,162,39,0.15);
+    --bg: #07070f;
+    --bg2: #0d0d1c;
+    --bg3: #12122a;
+    --indigo: #6366f1;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f97316;
+    --yellow: #eab308;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #0d0d1c 0%, #12122a 100%);
+    border-bottom: 1px solid rgba(201,162,39,0.3);
+    padding: 40px 48px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .header-left h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .header-left h1 span { color: var(--gold); }
+  .header-left p {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .badge-morno { background: rgba(234,179,8,0.15); color: #facc15; border: 1px solid rgba(234,179,8,0.35); }
+  .badge-score { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+  .badge-hoje { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-cohort { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+  .timer-box {
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,162,39,0.4);
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-align: center;
+  }
+  .timer-box .timer-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .timer-box .timer-value { font-size: 28px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 48px;
+    background: var(--bg2);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .tab {
+    padding: 14px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* CONTENT */
+  .content { padding: 40px 48px; max-width: 1000px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--bg2);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .card-gold { border-color: rgba(201,162,39,0.3); }
+  .card-red { border-color: rgba(239,68,68,0.3); }
+  .card-green { border-color: rgba(34,197,94,0.25); }
+  .card-cohort { border-color: rgba(99,102,241,0.35); background: rgba(99,102,241,0.04); }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title .icon { font-size: 20px; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* INFO ROWS */
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    gap: 16px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--muted); font-size: 13px; min-width: 130px; }
+  .info-value { color: var(--text); font-size: 14px; text-align: right; flex: 1; }
+  .info-value.gold { color: var(--gold); font-weight: 600; }
+  .info-value.green { color: #4ade80; font-weight: 600; }
+  .info-value.red { color: #f87171; font-weight: 600; }
+  .info-value.yellow { color: #facc15; font-weight: 600; }
+
+  /* STAT CARDS */
+  .stat-card {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-card .stat-value { font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+  .stat-card .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* SCRIPT PHASES */
+  .phase {
+    background: var(--bg2);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .phase-header:hover { background: rgba(255,255,255,0.03); }
+  .phase-header.active { background: rgba(201,162,39,0.07); }
+  .phase-left { display: flex; align-items: center; gap: 16px; }
+  .phase-number {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,162,39,0.4);
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .phase-info h3 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .phase-info p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .phase-timer {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .phase-content {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .phase-content.open { display: block; }
+
+  /* SCRIPT LINES */
+  .script-block {
+    background: var(--bg3);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 14px 0;
+    font-style: italic;
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .script-block strong { color: var(--gold); font-style: normal; }
+
+  .tip-block {
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #a5b4fc;
+  }
+  .tip-block strong { color: #818cf8; }
+
+  .warning-block {
+    background: rgba(239,68,68,0.07);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #fca5a5;
+  }
+  .warning-block strong { color: #f87171; }
+
+  .cohort-block {
+    background: rgba(99,102,241,0.1);
+    border: 1px solid rgba(99,102,241,0.35);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #c7d2fe;
+  }
+  .cohort-block strong { color: #a5b4fc; }
+
+  /* QUESTIONS */
+  .question-list { list-style: none; }
+  .question-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    gap: 12px;
+  }
+  .question-list li:last-child { border-bottom: none; }
+  .question-list li::before {
+    content: "→";
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* OBJECTIONS */
+  .objection {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .objection-trigger {
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .objection-trigger:hover { background: rgba(255,255,255,0.03); }
+  .objection-label { font-size: 14px; font-weight: 500; color: #fca5a5; }
+  .objection-arrow { color: var(--muted); transition: transform 0.2s; font-size: 12px; }
+  .objection-body {
+    display: none;
+    padding: 0 20px 18px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .objection-body.open { display: block; }
+  .objection-response {
+    font-style: italic;
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 14px 0 10px;
+  }
+  .objection-why { font-size: 12px; color: var(--muted); }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+    color: var(--text);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px; height: 20px;
+    border: 2px solid rgba(201,162,39,0.4);
+    border-radius: 4px;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .check-box:hover { border-color: var(--gold); background: var(--gold-dim); }
+  .check-box.checked { background: var(--gold); border-color: var(--gold); }
+  .check-box.checked::after { content: "✓"; color: #07070f; font-size: 12px; font-weight: 700; }
+
+  /* QUOTE */
+  .quote-block {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--gold-light);
+    border-left: 3px solid var(--gold);
+    padding: 16px 24px;
+    margin: 20px 0;
+    line-height: 1.6;
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 6px;
+  }
+  .tag-gold { background: var(--gold-dim); color: var(--gold); }
+  .tag-red { background: rgba(239,68,68,0.12); color: #f87171; }
+  .tag-green { background: rgba(34,197,94,0.12); color: #4ade80; }
+  .tag-blue { background: rgba(99,102,241,0.12); color: #818cf8; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    margin-top: 24px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  p { margin-bottom: 10px; font-size: 14px; color: var(--muted); }
+  ul.notes { padding-left: 18px; }
+  ul.notes li { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  ul.notes li strong { color: var(--text); }
+
+  /* PRINT BUTTON */
+  .btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,162,39,0.4);
+    border-radius: 10px;
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 32px;
+  }
+  .btn-save:hover { background: rgba(201,162,39,0.25); }
+
+  /* ALERT COHORT BANNER */
+  .cohort-banner {
+    background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(139,92,246,0.15) 100%);
+    border: 1px solid rgba(99,102,241,0.4);
+    border-radius: 14px;
+    padding: 20px 28px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .cohort-banner .banner-icon { font-size: 32px; }
+  .cohort-banner .banner-text h3 { color: #a5b4fc; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .cohort-banner .banner-text p { color: #818cf8; font-size: 13px; margin: 0; }
+
+  @media print {
+    .tabs, .btn-save, .timer-box { display: none; }
+    .tab-panel { display: block !important; }
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-top">
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <p>Call de Diagnóstico · CoHort AIOS Advanced · Duarte</p>
+    <h1>Samuel <span>Barber</span></h1>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+      <span class="badge badge-hoje">10/03 · 11h00</span>
+      <span class="badge badge-morno">Morno</span>
+      <span class="badge badge-score">Score 64 → 39</span>
+      <span class="badge badge-cohort">Foco: CoHort R$24.888</span>
+      <span class="badge" style="background:rgba(255,255,255,0.06);color:#94a3b8;border:1px solid rgba(255,255,255,0.12);">Com sócio(a)</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="timer-box">
+      <div class="timer-label">Tempo de call</div>
+      <div class="timer-value" id="timer">50:00</div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="startTimer()" style="background:var(--gold);color:#07070f;border:none;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;">START</button>
+        <button onclick="resetTimer()" style="background:var(--bg3);color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">RESET</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('briefing')">Briefing</div>
+  <div class="tab" onclick="showTab('script')">Script da Call</div>
+  <div class="tab" onclick="showTab('objections')">Objeções</div>
+  <div class="tab" onclick="showTab('fechamento')">Fechamento</div>
+</div>
+</div><!-- /sticky-top -->
+
+<!-- CONTENT -->
+<div class="content">
+
+  <button class="btn-save" onclick="window.print()">Salvar como PDF</button>
+
+  <!-- TAB: BRIEFING -->
+  <div class="tab-panel active" id="tab-briefing">
+
+    <!-- BANNER ALERTA COHORT -->
+    <div class="cohort-banner">
+      <div class="banner-icon">🎯</div>
+      <div class="banner-text">
+        <h3>Call de CoHort — não de Imersão</h3>
+        <p>Lead sinalizou que não está preparado para investir R$100k. Taise já apresentou o CoHort de R$24.888 online. Essa call é para confirmar e fechar o CoHort Advanced.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-gold">
+        <div class="card-title"><span class="icon">👤</span> Perfil do Lead</div>
+        <div class="info-row">
+          <span class="info-label">Nome</span>
+          <span class="info-value gold">Samuel (Samuka)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Instagram</span>
+          <span class="info-value">@samuelhbarber</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Telefone</span>
+          <span class="info-value">55 34984472727</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-value">samuka.m.silva@icloud.com</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Categoria</span>
+          <span class="info-value">Dono / Empresário</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">SDR</span>
+          <span class="info-value">Taise</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Closer</span>
+          <span class="info-value gold">Duarte</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> Qualificação</div>
+        <div class="info-row">
+          <span class="info-label">Faturamento</span>
+          <span class="info-value yellow">R$ 1M – R$ 3M</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Colaboradores</span>
+          <span class="info-value">6 a 15 pessoas</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Segunda cadeira</span>
+          <span class="info-value gold">Sim — sócio(a)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Pode ir a Floripa</span>
+          <span class="info-value green">Sim, sem dúvida!</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Investir R$100k</span>
+          <span class="info-value red">Não preparado agora</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Score bruto</span>
+          <span class="info-value">64 / 100</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Score pós-trava</span>
+          <span class="info-value yellow">39 / 100 (Morno)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🏢</span> Os Negócios de Samuel — Ecossistema</div>
+      <div class="warning-block">
+        <strong>Insight do Instagram (@samuelhbarber, 7.186 seguidores):</strong> Samuel é "El Patron" — o negócio principal visível é a <strong>barbearia</strong> (@elpatronbarbearia1), não o food. Ele também é <strong>Barbeiro Educador</strong> (@fepccssp). O food (@chefaconeria / @buffetdachefa) é negócio secundário. Aborde o ecossistema completo.
+      </div>
+      <div class="section-label">Negócios identificados</div>
+      <ul class="notes">
+        <li><strong>Barbearia El Patron (@elpatronbarbearia1):</strong> negócio principal — barbearia com time de 6–15 colaboradores, marca consolidada</li>
+        <li><strong>Pizza no Cone / Food (@chefaconeria / @buffetdachefa):</strong> alimentação com modelo físico (loja + trailer de eventos + rodízio presencial) + iFood + projetando franquia</li>
+        <li><strong>Educação de Barbeiros (@fepccssp):</strong> barbeiro educador — provável treinamento e capacitação de outros barbeiros</li>
+      </ul>
+      <div class="section-label">O que ele descreveu no formulário (food)</div>
+      <div class="quote-block">
+        "Alimentação especializada em pizza no cone. Atuamos no modelo físico e também no digital via iFood, projetando formatação para franquear para todo mundo. Modelo baseado em alto giro, experiência do cliente, padronização de marca e expansão através de produtos próprios e eventos."
+      </div>
+      <div class="section-label">Por que quer o AIOS (palavras dele)</div>
+      <ul class="notes">
+        <li><strong>Estrutura comercial:</strong> quer melhor estrutura para o comercial</li>
+        <li><strong>Tráfego pago + criativos:</strong> estratégias concretas para tráfego pago, copy e criativos</li>
+        <li><strong>Financeiro operacional:</strong> análise gráfica de CMV, ticket médio, DRE</li>
+        <li><strong>Campanhas:</strong> campanhas semestrais estruturadas</li>
+      </ul>
+    </div>
+
+    <div class="grid-3">
+      <div class="stat-card">
+        <div class="stat-value">R$1–3M</div>
+        <div class="stat-label">Faturamento anual</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Negócios no ecossistema</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">R$24k</div>
+        <div class="stat-label">Ticket alvo (CoHort)</div>
+      </div>
+    </div>
+
+    <div class="card card-gold" style="margin-top:24px;">
+      <div class="card-title"><span class="icon">⚡</span> Inteligência Estratégica — O Que a IA Resolve pra Ele</div>
+
+      <div class="section-label">Na Barbearia (El Patron)</div>
+      <ul class="notes">
+        <li><strong>Agente comercial:</strong> captura leads, agenda, envia confirmações, reduz no-show — hoje provavelmente feito manualmente ou por WhatsApp caótico</li>
+        <li><strong>Agente de tráfego pago:</strong> analisa criativos, sugere copies vencedoras, monitora métricas — exatamente o que ele pediu</li>
+        <li><strong>Agente de DRE/CMV:</strong> análise automática de custos, ticket médio, margem — controle financeiro que ele pediu explicitamente</li>
+        <li><strong>Agente de treinamento:</strong> para o braço de educação de barbeiros — onboarding de alunos, materiais, follow-up</li>
+      </ul>
+
+      <div class="section-label">No Food (Pizza no Cone / Franquia)</div>
+      <ul class="notes">
+        <li><strong>Agente de franqueamento:</strong> lead de franqueados, qualificação, envio de material, contratos — escala sem contratar</li>
+        <li><strong>Agente de iFood/delivery:</strong> resposta a avaliações, campanhas, análise de conversão</li>
+        <li><strong>Agente de campanhas:</strong> calendário semestral automático — ele pediu isso literalmente</li>
+      </ul>
+
+      <div class="section-label">A dor central que ele não nomeou</div>
+      <div class="cohort-block">
+        <strong>Samuel tem 3 negócios rodando com 6–15 pessoas.</strong> Ele está fragmentado — energia, time e dinheiro espalhados. A IA não vai só automatizar tarefas: vai dar a ele a capacidade de operar múltiplos negócios com um squad de agentes, sem contratar mais. Esse é o frame que vai ressoar.
+      </div>
+    </div>
+
+    <div class="card card-red">
+      <div class="card-title"><span class="icon">⚠️</span> Pontos de Atenção</div>
+      <ul class="notes">
+        <li><strong>Score travado por R$100k:</strong> ele disse que não está preparado. Não tente convencê-lo da Imersão — a call já foi redirecionada para CoHort. Respeite isso e feche o que ele pode fazer.</li>
+        <li><strong>Taise já mencionou R$24k online:</strong> ele já sabe do CoHort. Não apresente como coisa nova — confirme, aprofunde e feche.</li>
+        <li><strong>Tem sócio(a):</strong> inclua o sócio desde o início. Se não estiver na call, entenda se a decisão depende dele/dela.</li>
+        <li><strong>Múltiplos negócios = foco difuso:</strong> não tente resolver os 3 negócios na call. Escolha 1 dor concreta (sugiro: comercial/tráfego pago da barbearia OU franqueamento do food) e aprofunde.</li>
+        <li><strong>Faturamento R$1–3M:</strong> mais baixo que o perfil médio da Imersão. ROI do CoHort precisa ser apresentado em números pequenos e concretos para fazer sentido para o estágio dele.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- TAB: SCRIPT -->
+  <div class="tab-panel" id="tab-script">
+
+    <div class="cohort-block" style="margin-bottom:24px;">
+      <strong>Contexto da call:</strong> Taise já apresentou o CoHort de R$24.888. Samuel já sabe do produto. O script não precisa começar do zero — já existe uma conversa anterior. Referencie isso.
+    </div>
+
+    <!-- FASE 1 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">1</div>
+          <div class="phase-info">
+            <h3>Rapport & Abertura</h3>
+            <p>Quebrar gelo, retomar contexto, verificar se sócio está presente</p>
+          </div>
+        </div>
+        <span class="phase-timer">3–5 min</span>
+      </div>
+      <div class="phase-content open">
+        <div class="script-block">
+          "Samuka, boa tarde! Duarte aqui. A Taise me passou o contexto da conversa de vocês — ela me falou que você tem uns negócios muito interessantes rodando. Antes de começar, o seu sócio(a) está contigo agora ou é só você?"
+        </div>
+        <div class="script-block">
+          "Essa call tem uns 50 minutos. Eu quero entender melhor o que tá acontecendo nos seus negócios, o que tá pesando mais no seu dia a dia — e a partir disso a gente vê como o CoHort pode se encaixar de forma que faça sentido pra você. Pode ser?"
+        </div>
+        <div class="tip-block">
+          <strong>Se o sócio não estiver:</strong> "Tudo bem. Vamos fazer assim — no final, se você quiser incluir ela/ele numa conversa rápida de 15 minutos antes de decidir, posso abrir espaço."
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 2 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">2</div>
+          <div class="phase-info">
+            <h3>S — Situação</h3>
+            <p>Mapear os negócios, qual é o principal, como está a operação hoje</p>
+          </div>
+        </div>
+        <span class="phase-timer">7–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="tip-block">
+          <strong>Insight do Instagram:</strong> Samuel aparece como "El Patron" — principalmente barbeiro/educador. Mas no formulário falou de food (pizza no cone). Pergunte abertamente para ele mapear tudo.
+        </div>
+        <div class="section-label">Perguntas de situação</div>
+        <ul class="question-list">
+          <li>Me conta um pouco mais sobre os seus negócios. Você tem a barbearia, o food de pizza... tem mais alguma frente rodando?</li>
+          <li>Desses negócios, qual é o que mais exige o seu tempo hoje? Qual é o principal?</li>
+          <li>Você tem 6 a 15 colaboradores — eles ficam concentrados em um negócio ou divididos entre as frentes?</li>
+          <li>Na barbearia, você já tem processo de captação de novos clientes rodando — tráfego pago, indicação — ou ainda é orgânico?</li>
+          <li>O food com a pizza no cone — você falou em franquia. Já tem esse projeto estruturado ou ainda é uma ideia em desenvolvimento?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FASE 3 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">3</div>
+          <div class="phase-info">
+            <h3>P — Problema</h3>
+            <p>Identificar onde está o maior atrito — comercial, operação, financeiro</p>
+          </div>
+        </div>
+        <span class="phase-timer">7–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="section-label">Perguntas de problema</div>
+        <ul class="question-list">
+          <li>Você mencionou tráfego pago e copy — o que tá acontecendo hoje? Você já investe em tráfego ou ainda não começou?</li>
+          <li>No comercial, onde você sente que tá deixando mais dinheiro na mesa? Captação de novos clientes, retenção ou ticket médio?</li>
+          <li>Você falou em análise de CMV e DRE — você tem acesso a esses números hoje, ou é uma coisa que você sabe que precisa mas ainda não tem?</li>
+          <li>Com múltiplos negócios rodando, como você divide o seu tempo? Tem algum que tá sofrendo por falta da sua atenção?</li>
+          <li>Se você fosse empurrar só um dos seus negócios nos próximos 6 meses, qual seria? E o que travar isso?</li>
+        </ul>
+        <div class="script-block">
+          <strong>[Se ele falar de sobrecarga]</strong> "Isso é o que a gente mais ouve de quem tem múltiplos negócios. Você vira o gargalo da própria empresa. E o que o AIOS resolve não é uma ferramenta — é um squad de agentes que trabalha por você enquanto você foca no que só você consegue fazer."
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 4 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">4</div>
+          <div class="phase-info">
+            <h3>I — Implicação</h3>
+            <p>Amplificar o custo de não resolver — no contexto do estágio dele</p>
+          </div>
+        </div>
+        <span class="phase-timer">7–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="section-label">Perguntas de implicação</div>
+        <ul class="question-list">
+          <li>Se o tráfego pago continuar sem estrutura por mais 6 meses, o que muda no crescimento da barbearia?</li>
+          <li>Sem análise de CMV rodando, como você sabe se o food tá gerando margem ou consumindo caixa?</li>
+          <li>A franquia — se você não tiver um processo de captação de franqueados estruturado, quanto tempo até alguém copiar o modelo e chegar na sua frente?</li>
+        </ul>
+        <div class="script-block">
+          <strong>[Âncora de ROI realista para o estágio dele]</strong> "Você fatura entre R$1M e R$3M. Se o CoHort te ajudar a estruturar o comercial e tráfego da barbearia e aumentar 15% o faturamento — estamos falando de R$150k a R$450k a mais por ano. O investimento de R$24k você recupera em menos de um mês. Esse é o número concreto."
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 5 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">5</div>
+          <div class="phase-info">
+            <h3>N — Necessidade & Apresentação do CoHort</h3>
+            <p>Conectar o CoHort às dores específicas dos negócios dele</p>
+          </div>
+        </div>
+        <span class="phase-timer">8–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="script-block">
+          "Samuka, com base no que você me contou — [resumir 2-3 dores específicas] — o CoHort foi desenhado exatamente pra esse momento. 8 semanas online, você não precisa sair do seu negócio. Você implementa os agentes no ritmo que faz sentido pra você."
+        </div>
+        <div class="section-label">O que ele vai construir (personalizado)</div>
+        <ul class="notes">
+          <li><strong>Agente comercial da barbearia:</strong> captação, agendamento, confirmação, follow-up automático — reduz no-show e aumenta recorrência</li>
+          <li><strong>Agente de tráfego + copy:</strong> análise de criativos, sugestão de copies, relatório de performance — o que ele pediu explicitamente</li>
+          <li><strong>Agente de DRE/CMV:</strong> análise financeira automatizada — controle de margem, ticket médio, alerta de desvio</li>
+          <li><strong>Agente de franqueamento:</strong> captura leads de franqueados, qualifica, envia material, agenda reuniões — escala o projeto de franquia sem contratar</li>
+          <li><strong>Agente de campanhas:</strong> calendário semestral automático — exatamente o que ele listou no formulário</li>
+        </ul>
+        <div class="script-block">
+          "São 80+ agentes prontos. Você não começa do zero — você adapta pro seu negócio. E tem comunidade por 12 meses pra tirar dúvida, iterar e crescer junto com outros empresários do mesmo estágio."
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 6 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">6</div>
+          <div class="phase-info">
+            <h3>Fechamento</h3>
+            <p>Colher decisão, processar pagamento, dar boas-vindas</p>
+          </div>
+        </div>
+        <span class="phase-timer">5–8 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="script-block">
+          "Samuka, a Taise já te falou do CoHort de R$24.888. Você tem acesso a tudo isso — começa em abril, 8 semanas, no seu ritmo, sem viajar. A questão é: faz sentido garantir sua vaga agora?"
+        </div>
+        <div class="tip-block">
+          <strong>Silêncio após essa frase.</strong> Não preencha. Deixe ele responder.
+        </div>
+        <div class="script-block">
+          <strong>[Se hesitar]</strong> "O que você precisa ver pra tomar essa decisão hoje?"
+        </div>
+        <div class="script-block">
+          <strong>[Confirmação]</strong> "Perfeito. Vou te mandar o link agora no WhatsApp. Você pode parcelar em 12x de R$2.488. Qual forma funciona melhor pra você — à vista ou parcelado?"
+        </div>
+        <div class="warning-block">
+          <strong>Não desligues antes de:</strong> enviar link de pagamento + confirmar que ele recebeu + combinar data de assinatura se não for imediata.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB: OBJEÇÕES -->
+  <div class="tab-panel" id="tab-objections">
+
+    <div class="tip-block" style="margin-bottom:24px;">
+      Samuel já disse que não está preparado para R$100k. Não reabra essa porta a não ser que ele mesmo levante. Foco total no CoHort de R$24.888.
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Já sei do CoHort / a Taise já me falou"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">
+          "Exato — e foi por isso que a gente agendou essa call. A Taise te deu o overview do produto. Eu quero entender especificamente os seus negócios pra mostrar exatamente como os agentes se aplicam no seu caso. Não é uma apresentação genérica — é personalizado pro que você me contar."
+        </div>
+        <div class="objection-why">Por que funciona: valida que ele foi bem atendido pela SDR e redireciona para personalização — que é o diferencial desta call.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Não tenho tempo pra mais um curso"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">
+          "O CoHort foi desenhado exatamente pra quem não tem tempo — são empresários com múltiplos negócios rodando. As aulas são gravadas, você acessa quando quiser. E o ponto é justamente esse: você investe tempo agora pra criar agentes que vão te devolver tempo todo mês. É um investimento, não uma despesa de tempo."
+        </div>
+        <div class="objection-why">Por que funciona: inverte a lógica — tempo gasto no CoHort = tempo gerado pelos agentes.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"R$24.888 ainda é muito pra mim agora"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">
+          "Entendo. Você tem a opção de parcelar em 12x de R$2.488 — menos do que o salário de um colaborador de entrada. E o primeiro agente que você construir vai trabalhar por você 24 horas por dia, 7 dias por semana, sem férias, sem encargo. Qual o custo de não ter isso nos próximos 6 meses?"
+        </div>
+        <div class="objection-why">Por que funciona: quebra em parcela pequena e ancora no custo de não agir.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Preciso falar com meu sócio(a) antes"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">
+          "Faz sentido incluí-la/o agora? Consigo abrir uma call de 15 minutos ainda hoje pra apresentar o contexto pra ela/ele. Não quero que você tenha que explicar tudo do zero — é mais fácil a gente conversar juntos."
+        </div>
+        <div class="objection-why">Por que funciona: remove a barreira do sócio de forma proativa, evita o adiamento.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Já uso ferramentas de IA / já tenho automações"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">
+          "Ótimo — quer dizer que você já entende o valor. A diferença do AIOS é que não é uma ferramenta isolada. É um sistema onde os agentes conversam entre si, têm memória do seu negócio, e tomam decisões encadeadas. O que você tem hoje provavelmente são peças separadas. O CoHort te ensina a montar o squad completo."
+        </div>
+        <div class="objection-why">Por que funciona: eleva o nível de sofisticação sem invalidar o que ele já faz.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Tenho muitos negócios, não sei por qual começar"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">
+          "Boa pergunta — e o CoHort resolve isso. A primeira semana é exatamente sobre mapear seus negócios e priorizar onde a IA gera mais retorno primeiro. Você não precisa decidir agora — a metodologia te guia. O importante é entrar no sistema."
+        </div>
+        <div class="objection-why">Por que funciona: usa a própria objeção como argumento de entrada no CoHort.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB: FECHAMENTO -->
+  <div class="tab-panel" id="tab-fechamento">
+
+    <div class="card card-green">
+      <div class="card-title"><span class="icon">✅</span> Checklist Pré-Fechamento</div>
+      <ul class="checklist" id="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Verificou se sócio(a) está na call ou vai precisar de uma call separada</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Mapeou qual dos negócios é a maior dor/prioridade dele</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Apresentou ROI concreto e realista (ex: +15% fat. barbearia = R$150k+/ano)</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Conectou os agentes às dores específicas que ele mencionou (comercial, CMV, tráfego)</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Mencionou o parcelamento (12x R$2.488) como opção</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Pergunta de fechamento feita + silêncio mantido</li>
+      </ul>
+    </div>
+
+    <div class="card card-cohort">
+      <div class="card-title"><span class="icon">🎓</span> Frases de Fechamento — CoHort</div>
+
+      <div class="section-label">Fechamento direto</div>
+      <div class="script-block">
+        "Samuka, com tudo que você me contou — barbearia, food, franquia — você tem combustível de sobra pra crescer. O que falta é o sistema. Faz sentido garantir sua vaga no CoHort hoje?"
+      </div>
+
+      <div class="section-label">Fechamento por urgência</div>
+      <div class="script-block">
+        "O CoHort começa em 8 de abril — são menos de 30 dias. Quanto mais cedo você garante, mais tempo de preparação antes de começar. Vagas são limitadas: 50 no total."
+      </div>
+
+      <div class="section-label">Fechamento por parcela</div>
+      <div class="script-block">
+        "Em 12x de R$2.488 — é menos do que o custo de um colaborador. E os agentes que você cria trabalham por você todo dia, sem folga. É o melhor custo-benefício que você pode ter agora."
+      </div>
+
+      <div class="section-label">Fechamento por ROI específico</div>
+      <div class="script-block">
+        "Você fatura entre R$1M e R$3M. Se o agente comercial da sua barbearia fechar mais 5 clientes por mês que você perderia sem seguimento — em 6 meses o CoHort já pagou e está gerando lucro. Esse é o único risco aqui: não entrar."
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💳</span> Pós-Fechamento — Não Desligues Antes</div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Link de pagamento enviado no WhatsApp durante a call</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Confirmação de que ele recebeu o link</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Forma de pagamento definida (à vista ou 12x)</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Data de pagamento acordada (se não for imediata)</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Boas-vindas — "você agora está dentro do CoHort, começa em 08/04"</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Próximo passo claro (acesso à plataforma, grupo, etc.)</li>
+      </ul>
+    </div>
+
+    <div class="card" style="background:rgba(201,162,39,0.05);border-color:rgba(201,162,39,0.3);">
+      <div class="card-title"><span class="icon">📋</span> Produto — CoHort AIOS Advanced</div>
+      <div class="info-row">
+        <span class="info-label">Produto</span>
+        <span class="info-value gold">CoHort AIOS Advanced — Turma 2</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Preço</span>
+        <span class="info-value gold">R$ 24.888 (ou 12x R$ 2.488)</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Início</span>
+        <span class="info-value">08 de abril de 2026</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Formato</span>
+        <span class="info-value">Online · 8 semanas · 80+ agentes IA</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Inclui</span>
+        <span class="info-value">Comunidade 12 meses · Certificação vitalícia</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">ROI payback</span>
+        <span class="info-value green">Menos de 7 dias · ROI mês 1: 338%</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // TABS
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // PHASES
+  function togglePhase(header) {
+    const content = header.nextElementSibling;
+    const isOpen = content.classList.contains('open');
+    content.classList.toggle('open', !isOpen);
+    header.classList.toggle('active', !isOpen);
+  }
+
+  // OBJECTIONS
+  function toggleObj(trigger) {
+    const body = trigger.nextElementSibling;
+    const arrow = trigger.querySelector('.objection-arrow');
+    body.classList.toggle('open');
+    arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+  }
+
+  // CHECKLIST
+  function toggleCheck(box) {
+    box.classList.toggle('checked');
+  }
+
+  // TIMER
+  let timerInterval;
+  let seconds = 50 * 60;
+
+  function updateDisplay() {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    document.getElementById('timer').textContent =
+      String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    if (seconds <= 300) {
+      document.getElementById('timer').style.color = '#ef4444';
+    } else if (seconds <= 600) {
+      document.getElementById('timer').style.color = '#f97316';
+    } else {
+      document.getElementById('timer').style.color = 'var(--gold)';
+    }
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (seconds > 0) {
+        seconds--;
+        updateDisplay();
+      } else {
+        clearInterval(timerInterval);
+        document.getElementById('timer').textContent = 'FIM';
+      }
+    }, 1000);
+  }
+
+  function resetTimer() {
+    clearInterval(timerInterval);
+    seconds = 50 * 60;
+    updateDisplay();
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing — Guilherme | Call 12/03 17h</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a227;
+    --gold-light: #e8c04a;
+    --gold-dim: rgba(201,162,39,0.15);
+    --bg: #07070f;
+    --bg2: #0d0d1c;
+    --bg3: #12122a;
+    --indigo: #6366f1;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f97316;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; }
+  .sticky-top { position: sticky; top: 0; z-index: 100; }
+  .header { background: linear-gradient(135deg, #0d0d1c 0%, #12122a 100%); border-bottom: 1px solid rgba(201,162,39,0.3); padding: 40px 48px 32px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .header-left h1 { font-family: 'Playfair Display', serif; font-size: 36px; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+  .header-left h1 span { color: var(--gold); }
+  .header-left p { color: var(--muted); font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .badge-quente { background: rgba(249,115,22,0.15); color: #fb923c; border: 1px solid rgba(249,115,22,0.35); }
+  .badge-score { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+  .badge-hoje { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-green { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+  .badge-urgente { background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.4); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  .timer-box { background: var(--gold-dim); border: 1px solid rgba(201,162,39,0.4); border-radius: 12px; padding: 12px 20px; text-align: center; }
+  .timer-box .timer-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .timer-box .timer-value { font-size: 28px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .tabs { display: flex; gap: 0; padding: 0 48px; background: var(--bg2); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .tab { padding: 14px 22px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .content { padding: 40px 48px; max-width: 1000px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; }
+  .card-gold { border-color: rgba(201,162,39,0.3); }
+  .card-red { border-color: rgba(239,68,68,0.3); }
+  .card-green { border-color: rgba(34,197,94,0.25); }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .card-title .icon { font-size: 20px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); gap: 16px; }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--muted); font-size: 13px; min-width: 130px; }
+  .info-value { color: var(--text); font-size: 14px; text-align: right; flex: 1; }
+  .info-value.gold { color: var(--gold); font-weight: 600; }
+  .info-value.green { color: #4ade80; font-weight: 600; }
+  .info-value.red { color: #f87171; font-weight: 600; }
+  .stat-card { background: var(--bg3); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 20px; text-align: center; }
+  .stat-card .stat-value { font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+  .stat-card .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .phase { background: var(--bg2); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+  .phase-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; cursor: pointer; transition: background 0.2s; }
+  .phase-header:hover { background: rgba(255,255,255,0.03); }
+  .phase-header.active { background: rgba(201,162,39,0.07); }
+  .phase-left { display: flex; align-items: center; gap: 16px; }
+  .phase-number { width: 36px; height: 36px; border-radius: 50%; background: var(--gold-dim); border: 1px solid rgba(201,162,39,0.4); color: var(--gold); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .phase-info h3 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .phase-info p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .phase-timer { background: var(--bg3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 4px 12px; font-size: 12px; color: var(--muted); }
+  .phase-content { display: none; padding: 0 24px 24px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .phase-content.open { display: block; }
+  .script-block { background: var(--bg3); border-left: 3px solid var(--gold); border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 14px 0; font-style: italic; color: #cbd5e1; font-size: 14px; line-height: 1.8; }
+  .script-block strong { color: var(--gold); font-style: normal; }
+  .tip-block { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 13px; color: #a5b4fc; }
+  .tip-block strong { color: #818cf8; }
+  .warning-block { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 13px; color: #fca5a5; }
+  .warning-block strong { color: #f87171; }
+  .success-block { background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.25); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 13px; color: #86efac; }
+  .success-block strong { color: #4ade80; }
+  .question-list { list-style: none; }
+  .question-list li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; color: var(--text); display: flex; gap: 12px; }
+  .question-list li:last-child { border-bottom: none; }
+  .question-list li::before { content: "→"; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+  .objection { background: var(--bg3); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+  .objection-trigger { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+  .objection-trigger:hover { background: rgba(255,255,255,0.03); }
+  .objection-label { font-size: 14px; font-weight: 500; color: #fca5a5; }
+  .objection-arrow { color: var(--muted); transition: transform 0.2s; font-size: 12px; }
+  .objection-body { display: none; padding: 0 20px 18px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .objection-body.open { display: block; }
+  .objection-response { font-style: italic; color: #cbd5e1; font-size: 14px; line-height: 1.8; margin: 14px 0 10px; }
+  .objection-why { font-size: 12px; color: var(--muted); }
+  .checklist { list-style: none; }
+  .checklist li { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; color: var(--text); }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box { width: 20px; height: 20px; border: 2px solid rgba(201,162,39,0.4); border-radius: 4px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 1px; }
+  .check-box:hover { border-color: var(--gold); background: var(--gold-dim); }
+  .check-box.checked { background: var(--gold); border-color: var(--gold); }
+  .check-box.checked::after { content: "✓"; color: #07070f; font-size: 12px; font-weight: 700; }
+  .quote-block { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 24px; margin: 20px 0; line-height: 1.6; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; margin-top: 24px; }
+  .section-label:first-child { margin-top: 0; }
+  p { margin-bottom: 10px; font-size: 14px; color: var(--muted); }
+  ul.notes { padding-left: 18px; }
+  ul.notes li { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  ul.notes li strong { color: var(--text); }
+  .btn-save { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: var(--gold-dim); border: 1px solid rgba(201,162,39,0.4); border-radius: 10px; color: var(--gold); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 32px; }
+  .btn-save:hover { background: rgba(201,162,39,0.25); }
+  @media print { .tabs, .btn-save, .timer-box { display: none; } .tab-panel { display: block !important; } body { background: white; color: black; } }
+</style>
+</head>
+<body>
+
+<div class="sticky-top">
+<div class="header">
+  <div class="header-left">
+    <p>Call de Diagnóstico · Imersão AIOS Squad · Duarte</p>
+    <h1>Guilherme <span>Alves</span></h1>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+      <span class="badge badge-urgente">HOJE · 12/03 · 17h00</span>
+      <span class="badge badge-quente">Quente 🔥</span>
+      <span class="badge badge-green">Quer aplicar imediatamente</span>
+      <span class="badge badge-score">Advocacia · RS</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="timer-box">
+      <div class="timer-label">Tempo de call</div>
+      <div class="timer-value" id="timer">50:00</div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="startTimer()" style="background:var(--gold);color:#07070f;border:none;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;">START</button>
+        <button onclick="resetTimer()" style="background:var(--bg3);color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">RESET</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('briefing')">Briefing</div>
+  <div class="tab" onclick="showTab('script')">Script da Call</div>
+  <div class="tab" onclick="showTab('objections')">Objeções</div>
+  <div class="tab" onclick="showTab('fechamento')">Fechamento</div>
+</div>
+</div>
+
+<div class="content">
+  <button class="btn-save" onclick="window.print()">Salvar como PDF</button>
+
+  <!-- TAB: BRIEFING -->
+  <div class="tab-panel active" id="tab-briefing">
+
+    <div class="success-block" style="margin-bottom:24px;font-size:14px;">
+      <strong>Lead Quente com intenção de compra imediata.</strong> Disse "Claro! Quero aplicar o AIOS imediatamente!" Escritório de advocacia — Previdenciário, Bancário e Família — pessoa física, RS, 6–15 funcionários. SDR: Taise. Call: 12/03 às 17h. Objetivo: diagnosticar, mostrar os agentes certos para advocacia, e fechar na call. Tem sócio — mapear na abertura.
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-gold">
+        <div class="card-title"><span class="icon">👤</span> Perfil do Lead</div>
+        <div class="info-row"><span class="info-label">Nome</span><span class="info-value gold">Guilherme</span></div>
+        <div class="info-row"><span class="info-label">Instagram</span><span class="info-value">@guialvesp</span></div>
+        <div class="info-row"><span class="info-label">WhatsApp</span><span class="info-value">55 51997153755</span></div>
+        <div class="info-row"><span class="info-label">Cargo</span><span class="info-value">Dono / Empresário</span></div>
+        <div class="info-row"><span class="info-label">Idade</span><span class="info-value">55 anos</span></div>
+        <div class="info-row"><span class="info-label">SDR</span><span class="info-value">Taise</span></div>
+        <div class="info-row"><span class="info-label">Closer</span><span class="info-value gold">Duarte</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> Qualificação</div>
+        <div class="info-row"><span class="info-label">Faturamento</span><span class="info-value green">R$ 1M a R$ 3M</span></div>
+        <div class="info-row"><span class="info-label">Equipe</span><span class="info-value">6 a 15 pessoas</span></div>
+        <div class="info-row"><span class="info-label">Pode ir a Floripa</span><span class="info-value green">Sim, sem dúvida!</span></div>
+        <div class="info-row"><span class="info-label">Investir R$100k</span><span class="info-value green">Quer imediatamente</span></div>
+        <div class="info-row"><span class="info-label">Temperatura</span><span class="info-value" style="color:#fb923c;font-weight:600;">Quente 🔥</span></div>
+        <div class="info-row"><span class="info-label">Tem sócio</span><span class="info-value">Sim — mapear quem</span></div>
+        <div class="info-row"><span class="info-label">Tem mentor</span><span class="info-value green">Sim</span></div>
+      </div>
+    </div>
+
+    <div class="card card-gold">
+      <div class="card-title"><span class="icon">⚖️</span> O Negócio — Escritório de Advocacia</div>
+      <div class="quote-block">
+        "Direito previdenciário, bancário e família — pessoa física — digital e físico."
+      </div>
+
+      <div class="section-label">As 3 áreas do escritório e o que isso significa</div>
+      <ul class="notes">
+        <li><strong>Direito Previdenciário (INSS):</strong> aposentadoria por tempo/idade/invalidez, revisão de benefícios, BPC/LOAS, pensão por morte. É a área de MAIOR VOLUME e MAIOR REPETIÇÃO da advocacia brasileira — cada caso segue praticamente o mesmo fluxo</li>
+        <li><strong>Direito Bancário:</strong> negociação de dívidas, revisão de contratos abusivos, ações contra bancos por cobranças indevidas. Alta demanda com a crise de crédito no Brasil</li>
+        <li><strong>Direito de Família:</strong> divórcio, guarda, alimentos, inventário. Processos emocionais, clientes ansiosos, muito atendimento humanizado necessário</li>
+        <li><strong>Pessoa física:</strong> não atende empresas — atende cidadãos comuns. Alto volume de casos similares, clientes com menos familiaridade com o processo jurídico = muita demanda por explicação e acompanhamento</li>
+        <li><strong>Digital + Físico:</strong> já tem presença digital ativa — capta leads online além da indicação tradicional</li>
+      </ul>
+
+      <div class="section-label">Perfil operacional</div>
+      <ul class="notes">
+        <li><strong>6–15 pessoas:</strong> escritório médio consolidado — tem advogados, secretárias, possivelmente paralegais. Cresceu além do escritório familiar mas ainda sente gargalos de escala</li>
+        <li><strong>R$1M–R$3M:</strong> faturamento robusto para advocacia pessoa física — provavelmente volume alto de processos em andamento simultâneos</li>
+        <li><strong>DDD 51 (Porto Alegre/RS):</strong> mercado competitivo com alta concentração de advogados previdenciários</li>
+        <li><strong>Tem mentor:</strong> já investe em crescimento pessoal e profissional — não é avesso a novidades, entende o valor de investimento em capacitação</li>
+      </ul>
+    </div>
+
+    <div class="grid-3">
+      <div class="stat-card">
+        <div class="stat-value">6–15</div>
+        <div class="stat-label">Pessoas na equipe</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Áreas do direito</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">R$2M</div>
+        <div class="stat-label">Faturamento estimado</div>
+      </div>
+    </div>
+
+    <div class="card card-gold" style="margin-top:24px;">
+      <div class="card-title"><span class="icon">⚡</span> Inteligência Estratégica — Onde o AIOS transforma o escritório dele</div>
+
+      <div class="section-label">Gargalo principal identificado: PREVIDENCIÁRIO = VOLUME + REPETIÇÃO</div>
+      <div class="tip-block">
+        <strong>Oportunidade de ouro:</strong> Direito previdenciário é o segmento jurídico com maior repetição de processos no Brasil. Cada aposentadoria por tempo de contribuição segue o mesmo fluxo: coleta de documentos → CNIS → cálculo de benefício → protocolo no INSS → acompanhamento. Um agente que faz o intake, coleta documentos via WhatsApp e monta o dossiê automaticamente transforma horas de trabalho administrativo em minutos — sem contratar mais ninguém.
+      </div>
+
+      <div class="section-label">Os 6 agentes que fazem sentido imediato para ele</div>
+      <ul class="notes">
+        <li><strong>1. Agente de Triagem/Intake:</strong> lead chega pelo site ou WhatsApp → agente faz perguntas qualificadoras ("qual seu problema?", "há quanto tempo contribuiu?") → determina a área do direito, probabilidade de êxito e urgência → passa só os casos viáveis para o advogado. Elimina triagem manual que consome horas da equipe</li>
+        <li><strong>2. Agente SDR Jurídico:</strong> qualifica leads que chegam pelo Instagram e Google, responde dúvidas iniciais ("tenho direito à aposentadoria?"), agenda consulta e faz follow-up. Funciona 24h, inclusive fora do horário comercial — onde ele hoje perde lead</li>
+        <li><strong>3. Agente de Coleta Documental (Previdenciário):</strong> após fechar contrato, solicita automaticamente via WhatsApp cada documento necessário (CTPS, CNIS, exames), dá checklist ao cliente, acompanha o que falta. Elimina vai-e-vem de ligações e e-mails</li>
+        <li><strong>4. Agente de Atualização de Processos:</strong> cliente manda WhatsApp "como está meu processo?" → agente consulta andamento, responde com status atualizado em linguagem simples. Reduz drasticamente o volume de ligações que travam a equipe</li>
+        <li><strong>5. Agente de Conteúdo Jurídico:</strong> posts semanais sobre direitos previdenciários ("você sabe se tem direito à aposentadoria especial?"), bancários ("banco cobrou taxa indevida? veja o que fazer") e família. Atrai leads orgânicos sem esforço</li>
+        <li><strong>6. Agente de Reativação de Clientes:</strong> contata ex-clientes com novas oportunidades ("nova tese do STJ pode revisar seu benefício", "mudança na lei de alimentos"). Receita recorrente sem custo de aquisição</li>
+      </ul>
+
+      <div class="section-label">O argumento que vai ressoar com ele</div>
+      <div class="tip-block">
+        <strong>Escritório jurídico com IA é vantagem competitiva brutal em RS.</strong> A maioria dos escritórios de Previdenciário ainda opera no WhatsApp manual, planilha e ligação. Um escritório que responde lead em 2 minutos às 22h, coleta todos os documentos automaticamente e mantém o cliente informado sem ligar — esse escritório dobra a capacidade sem dobrar a equipe. Com 6–15 pessoas já estruturadas, o AIOS multiplica o que ele tem.
+      </div>
+
+      <div class="section-label">Atenção — 55 anos + área jurídica</div>
+      <div class="warning-block">
+        <strong>Pode surgir a objeção ética/profissional:</strong> "Advocacia precisa de toque humano" ou "OAB tem restrições". Rebater antes que apareça: o AIOS não faz advocacia — faz o que não é advocacia (triagem, coleta de docs, atualização de status, marketing). O advogado continua sendo o profissional — o agente é a infraestrutura ao redor dele. Isso é totalmente legal e já é usado pelos maiores escritórios do Brasil.
+      </div>
+    </div>
+
+    <div class="card card-red">
+      <div class="card-title"><span class="icon">⚠️</span> Pontos de Atenção</div>
+      <ul class="notes">
+        <li><strong>Tem sócio:</strong> mapeie logo na abertura — quem é, está envolvido na operação, precisa de alinhamento para decisão de R$100k? Se sócio não sabe da call, pode travar o fechamento</li>
+        <li><strong>55 anos:</strong> geração que pode ter mais resistência a IA em contexto profissional. Mas já disse "quero aplicar imediatamente" — suprimiu essa barreira. Não trazer de volta com linguagem muito técnica</li>
+        <li><strong>Tem mentor:</strong> ponto positivo — ele já investe em si mesmo. Mas pode comparar o R$100k com outros investimentos que o mentor indicou. Deixa o ROI falar mais alto</li>
+        <li><strong>Área jurídica — regulação da OAB:</strong> se surgir objeção sobre legalidade de IA na advocacia, responder diretamente: o AIOS cuida dos processos operacionais e de marketing, não do exercício da advocacia em si</li>
+        <li><strong>DDD 51 = Porto Alegre:</strong> Florianópolis é fácil — 3h de carro ou voo direto de 40 min. Reforce se necessário</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- TAB: SCRIPT -->
+  <div class="tab-panel" id="tab-script">
+
+    <div class="success-block" style="margin-bottom:24px;">
+      <strong>Call de fechamento com aquecimento rápido.</strong> Ele já quer. Mas advocacia tem nuances específicas — seu trabalho é: (1) mostrar que você entende o escritório jurídico e não está vendendo "mais um software", (2) revelar os 2–3 agentes que resolvem o problema DELE especificamente, (3) mapear o sócio, (4) fechar e enviar contrato antes de desligar.
+    </div>
+
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left"><div class="phase-number">1</div><div class="phase-info"><h3>Rapport & Abertura</h3><p>Conectar no dia a dia do escritório antes de qualquer pitch</p></div></div>
+        <div class="phase-timer">3–5 min</div>
+      </div>
+      <div class="phase-content">
+        <div class="script-block">
+          "Guilherme, boa tarde! Que bom te ter aqui. Vi que você atua com previdenciário, bancário e família — pessoa física. Isso é um volume considerável de processos simultâneos. <strong>Me conta um pouco: como está a operação hoje? Você e seus sócios ainda estão na linha de frente do atendimento ou já tem uma equipe que filtra?</strong>"
+        </div>
+        <div class="tip-block">
+          <strong>Objetivo:</strong> Fazer ele falar da operação. Em advocacia, o dono geralmente ainda está no atendimento — isso vai confirmar o gargalo e te dar o argumento perfeito para os agentes.
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left"><div class="phase-number">2</div><div class="phase-info"><h3>S — Situação</h3><p>Mapear volume, fluxo de leads e operação do escritório</p></div></div>
+        <div class="phase-timer">7–8 min</div>
+      </div>
+      <div class="phase-content">
+        <ul class="question-list">
+          <li>Quantos processos vocês têm ativos em média hoje? E qual área tem mais volume — previdenciário, bancário ou família?</li>
+          <li>Como chegam os novos clientes — indicação, Google, Instagram, tráfego pago?</li>
+          <li>Quando um lead entra em contato fora do horário comercial, o que acontece? Alguém responde ou o lead espera até o dia seguinte?</li>
+          <li>Vocês têm alguma automação hoje — CRM, sistema jurídico, chatbot?</li>
+          <li>Seu sócio está envolvido na operação do dia a dia ou mais na parte técnica/jurídica?</li>
+        </ul>
+        <div class="tip-block">
+          <strong>O que mapear:</strong> (a) volume de processos previdenciários — esse é o ouro, (b) se perde lead fora do horário, (c) quanto tempo da equipe vai para coleta de documentos e atualização de clientes.
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left"><div class="phase-number">3</div><div class="phase-info"><h3>P — Problema</h3><p>Identificar o gargalo que mais trava o crescimento do escritório</p></div></div>
+        <div class="phase-timer">6–8 min</div>
+      </div>
+      <div class="phase-content">
+        <ul class="question-list">
+          <li>Qual processo hoje consome mais tempo da sua equipe sem precisar da capacidade técnica de um advogado?</li>
+          <li>Quanto tempo por caso vai para coleta de documentos e idas e vindas com o cliente antes de protocolar?</li>
+          <li>Você tem ideia de quantos leads entram em contato e não viram cliente por demora de resposta ou falta de follow-up?</li>
+          <li>Como os clientes pedem atualização do processo — ligam direto, WhatsApp? Quantas vezes por semana isso trava a equipe?</li>
+          <li>Se você quiser dobrar o número de processos abertos por mês, o que explode primeiro?</li>
+        </ul>
+        <div class="script-block">
+          "Guilherme, no previdenciário especificamente — quando um cliente fecha contrato, quanto tempo leva do contrato assinado até você ter todos os documentos em mãos para protocolar? <strong>Quem faz essa coleta hoje e quanto vai e volta tem antes de ter tudo?</strong>"
+        </div>
+        <div class="warning-block">
+          <strong>Escute o número.</strong> Se ele falar "2, 3 semanas", você tem o argumento do agente de coleta documental pronto. Se falar "os clientes ligam toda hora perguntando do processo", o agente de atualização é o caminho.
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left"><div class="phase-number">4</div><div class="phase-info"><h3>I — Implicação</h3><p>Ampliar o custo real de cada gargalo identificado</p></div></div>
+        <div class="phase-timer">5–7 min</div>
+      </div>
+      <div class="phase-content">
+        <ul class="question-list">
+          <li>Quanto tempo por semana sua equipe gasta em atividades que não são advocacia — respondendo WhatsApp, coletando documento, atualizando cliente?</li>
+          <li>Quantos casos a mais vocês conseguiriam abrir por mês se essas horas fossem liberadas?</li>
+          <li>Você tem ideia do quanto perde em leads que não respondem rápido o suficiente?</li>
+        </ul>
+        <div class="script-block">
+          "Pensa comigo, Guilherme: se cada advogado da sua equipe ganha 5 horas por semana que hoje vão para administrativo — <strong>quantos processos a mais vocês conseguem tocar com isso? Multiplica pelo honorário médio, por 12 meses. Isso é o ROI do AIOS para o seu escritório.</strong>"
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left"><div class="phase-number">5</div><div class="phase-info"><h3>N — Necessidade & Apresentação da Imersão</h3><p>Conectar os agentes às dores mapeadas</p></div></div>
+        <div class="phase-timer">8–10 min</div>
+      </div>
+      <div class="phase-content">
+        <div class="script-block">
+          "Guilherme, tudo que você descreveu — [gargalo específico] — é exatamente o que você vai resolver na Imersão AIOS Squad. <strong>Dois dias em Florianópolis, 19 e 20 de março, com Alan Nikolas e Thiago Finch.</strong> Você sai com os agentes do seu escritório configurados e rodando. Não é curso para depois — você constrói ao vivo."
+        </div>
+        <div class="section-label">Os 3 agentes prioritários para o escritório dele</div>
+        <ul class="notes">
+          <li><strong>1. Agente de Triagem de Leads:</strong> lead chega pelo WhatsApp ou site → agente qualifica ("qual sua situação?"), determina se o caso tem viabilidade, agenda consulta com o advogado certo. Você para de perder lead e para de gastar tempo com casos sem viabilidade</li>
+          <li><strong>2. Agente de Coleta Documental:</strong> cliente assina contrato → agente já solicita automaticamente cada documento pelo WhatsApp, dá checklist, cobra o que falta, organiza para o advogado. Elimina semanas de vai-e-vem</li>
+          <li><strong>3. Agente de Atualização de Processos:</strong> cliente manda "como está meu processo?" → agente responde com status atualizado em linguagem simples, sem precisar do advogado. Libera horas da equipe toda semana</li>
+        </ul>
+        <div class="section-label">A Imersão — o que ele recebe</div>
+        <ul class="notes">
+          <li><strong>Quando:</strong> 19 e 20 de março — em 7 dias</li>
+          <li><strong>Onde:</strong> Florianópolis, SC — fácil de Porto Alegre (voo direto 40 min)</li>
+          <li><strong>Com quem:</strong> Alan Nikolas + Thiago Finch</li>
+          <li><strong>Inclui:</strong> 1 convidado — pode trazer o sócio</li>
+          <li><strong>Investimento:</strong> R$100.000</li>
+        </ul>
+        <div class="tip-block">
+          <strong>Ancoragem de ROI:</strong> "Se o agente liberar 5h por semana por advogado na sua equipe de 10 pessoas — são 50h/semana a mais de capacidade jurídica. Quantos processos a mais isso representa por mês? Multiplica pelo honorário. O R$100k se paga em quanto tempo?"
+        </div>
+        <div class="tip-block">
+          <strong>Sobre legalidade (OAB) — falar proativamente:</strong> "Importante deixar claro: o AIOS não pratica advocacia. Ele cuida de tudo que está ao redor do exercício jurídico — triagem, documentação, marketing, atualização de clientes. O advogado continua sendo o único que assina, peticiona e orienta. Isso já é usado pelos maiores escritórios do Brasil e é 100% dentro das normas da OAB."
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left"><div class="phase-number">6</div><div class="phase-info"><h3>Fechamento</h3><p>Colher o sim e enviar contrato antes de desligar</p></div></div>
+        <div class="phase-timer">5–8 min</div>
+      </div>
+      <div class="phase-content">
+        <div class="script-block">
+          "Guilherme, você mesmo disse que quer aplicar o AIOS imediatamente. A Imersão é em 7 dias. <strong>Vamos garantir sua vaga agora — você e seu sócio podem ir juntos na segunda cadeira.</strong>"
+        </div>
+        <div class="tip-block">
+          <strong>Silêncio após perguntar.</strong> Ele já disse que quer. Não quebre com mais argumentos. Espere.
+        </div>
+        <div class="script-block">
+          "Perfeito. Vou te mandar o contrato e o link pelo WhatsApp agora. <strong>Seu sócio vai junto ou prefere trazer alguém da equipe na segunda cadeira?</strong>"
+        </div>
+        <div class="warning-block">
+          <strong>Não desligar sem:</strong> contrato enviado + link de pagamento + confirmação de recebimento. Lead quente que não fecha na call esfria rápido — e a Imersão é em 7 dias.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB: OBJEÇÕES -->
+  <div class="tab-panel" id="tab-objections">
+
+    <div class="tip-block" style="margin-bottom:24px;">
+      <strong>Lead quente — objeções provavelmente operacionais ou do sócio.</strong> A principal barreira aqui é a especificidade da área jurídica (OAB, ética, confiança) e o sócio. Trate rápido e volte para o fechamento.
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Advocacia precisa de toque humano — IA não serve aqui"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <p class="objection-response">"Guilherme, 100% de acordo — e é exatamente por isso que o AIOS não faz advocacia. Ele faz o que não é advocacia: responde o lead às 23h, coleta os documentos do cliente, atualiza quem pergunta como está o processo, posta conteúdo no Instagram. O toque humano continua onde precisa — na consulta, na estratégia, na petição. O que muda é que você para de gastar esse toque humano em tarefas que um agente resolve melhor e mais rápido. Os maiores escritórios do Brasil já operam assim."</p>
+        <p class="objection-why">💡 Separa o exercício da advocacia (que continua humano) da operação ao redor (que o AIOS assume). Usa prova social dos grandes escritórios.</p>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"A OAB tem restrições para uso de IA na advocacia"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <p class="objection-response">"Ótima preocupação — e a resposta é: o AIOS opera na camada que a OAB não regula. Triagem de leads, coleta de documentos, atualização de clientes, marketing jurídico — tudo isso não é exercício da advocacia. O advogado continua sendo o único responsável pela orientação jurídica, pela petição e pela assinatura. O agente é a equipe de apoio que nunca cansa. Isso já está sendo amplamente usado no Brasil com total conformidade."</p>
+        <p class="objection-why">💡 Aborda diretamente a questão regulatória. Deixa o advogado no controle total do exercício jurídico — o AIOS é infraestrutura, não advogado.</p>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Preciso conversar com meu sócio"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <p class="objection-response">"Faz sentido. Me diz — você tem autonomia para esse investimento ou precisa de alinhamento formal? [Escuta] Posso incluir seu sócio numa call rápida de 15 minutos ainda hoje. E olha — a segunda cadeira da Imersão existe para trazer exatamente ele. Vocês dois vão juntos a Florianópolis, constroem o AIOS do escritório juntos. Saem alinhados e com o sistema rodando. O que eu faço agora para garantir as duas cadeiras antes que a vaga feche?"</p>
+        <p class="objection-why">💡 Converte o sócio em segunda cadeira — de obstáculo para parceiro. Cria urgência real (7 dias) e oferece call rápida de alinhamento.</p>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"R$100k é muito agora / deixa eu pensar"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <p class="objection-response">"Guilherme, você mesmo disse que quer aplicar imediatamente. O que mudou? [Escuta] Me ajuda a entender — é sobre o momento do caixa ou é algo específico que ficou sem resposta? Porque vamos calcular juntos: quanto você fatura por processo previdenciário em média? Se o agente abrir espaço para 10 processos a mais por mês que hoje você não consegue pegar — em 12 meses, quanto o R$100k representa da receita adicional? Geralmente se paga nos primeiros 2 ou 3 meses."</p>
+        <p class="objection-why">💡 Relembra a intenção dele. Conecta ao ROI com os números específicos do escritório. Não baixa o preço — eleva o valor percebido.</p>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Minha equipe não tem perfil técnico para implementar"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <p class="objection-response">"A Imersão é exatamente para isso. Você não precisa de equipe técnica — você e quem você trouxer saem de lá com os agentes construídos e rodando, sem precisar saber programar. O Alan Nikolas e o Thiago Finch fazem isso com você ao vivo, dois dias. A questão não é se sua equipe consegue implementar depois — é se você vai estar lá para construir junto. Quantas pessoas da sua equipe usariam os agentes no dia a dia?"</p>
+        <p class="objection-why">💡 Reposiciona a Imersão como implementação feita ao vivo. Remove a barreira técnica completamente.</p>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"7 dias é pouco tempo para me organizar"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <p class="objection-response">"Dois dias fora do escritório — sua equipe consegue operar sem você nesse período? [Escuta] Perfeito. Porto Alegre → Florianópolis: voo direto de 40 minutos ou 3 horas de carro. Você sai sexta à noite ou sábado cedo, está lá. A maioria dos empresários que foram disseram que foram os dois dias mais rentáveis do ano. O que você precisa resolver internamente para garantir a vaga?"</p>
+        <p class="objection-why">💡 Minimiza a logística (voo direto de 40 min de POA) e ancora no resultado com social proof.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB: FECHAMENTO -->
+  <div class="tab-panel" id="tab-fechamento">
+
+    <div class="card card-gold">
+      <div class="card-title"><span class="icon">✅</span> Checklist Pré-Fechamento</div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Gargalo principal nomeado — coleta de docs, atualização de clientes ou triagem de leads</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>ROI calculado com os números DELE (honorário médio × processos a mais × 12 meses)</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Questão OAB/legalidade endereçada proativamente</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Sócio mapeado — quem é, grau de envolvimento na decisão financeira</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Segunda cadeira mencionada — sócio ou alguém da equipe</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Data e logística reforçadas — 19/03, Florianópolis, 40 min de voo de POA</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Pergunta de fechamento feita + silêncio mantido</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💬</span> Frases de Fechamento</div>
+      <div class="script-block"><strong>Direto:</strong> "Guilherme, você disse que quer aplicar imediatamente. A Imersão é em 7 dias. Vamos garantir sua vaga agora?"</div>
+      <div class="script-block"><strong>Sócio:</strong> "Traz seu sócio como segunda cadeira — vocês dois constroem o AIOS do escritório juntos. Saem de lá alinhados e com o sistema rodando."</div>
+      <div class="script-block"><strong>ROI:</strong> "10 processos a mais por mês × seu honorário médio × 12 meses. O R$100k se paga em quanto tempo no seu escritório?"</div>
+      <div class="script-block"><strong>Urgência:</strong> "São 7 dias. Essa é a única edição de 2026. A decisão precisa ser hoje."</div>
+      <div class="script-block"><strong>Exclusividade:</strong> "Você vai estar na mesma sala com empresários de R$1M a R$35M. Escritório jurídico aplicando AIOS — vantagem competitiva que seus concorrentes em POA não vão ter tão cedo."</div>
+    </div>
+
+    <div class="card card-green">
+      <div class="card-title"><span class="icon">🎫</span> A Imersão — Detalhes para Confirmar</div>
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="stat-card"><div class="stat-value">19–20/03</div><div class="stat-label">Florianópolis, SC</div></div>
+        <div class="stat-card"><div class="stat-value">R$100k</div><div class="stat-label">Inclui 2ª cadeira</div></div>
+      </div>
+      <ul class="notes">
+        <li><strong>Speakers:</strong> Alan Nikolas (automação IA) + Thiago Finch (escala com IA)</li>
+        <li><strong>Promessa:</strong> sai com o AIOS implementado no próprio negócio — não um manual</li>
+        <li><strong>Logística POA:</strong> voo direto Gol/Azul, 40 minutos — saída sexta à noite ou sábado cedo</li>
+        <li><strong>Segunda cadeira:</strong> sócio ou membro da equipe sem custo adicional</li>
+      </ul>
+    </div>
+
+    <div class="card card-gold">
+      <div class="card-title"><span class="icon">📋</span> Checklist Pós-Fechamento — Não desligar antes</div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Contrato enviado no WhatsApp (Clicksign / DocuSign)</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Link de pagamento enviado</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Confirmação de recebimento obtida</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Nome da segunda cadeira coletado</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Boas-vindas — bem-vindo ao grupo dos compradores</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Registrar venda no CRM / planilha</span></li>
+      </ul>
+    </div>
+
+    <div class="card card-red">
+      <div class="card-title"><span class="icon">🔄</span> Se não fechar na call</div>
+      <ul class="notes">
+        <li><strong>Próximo passo imediato:</strong> "O que falta para você confirmar? Me diz e eu resolvo agora."</li>
+        <li><strong>Se for sócio:</strong> marcar call de 15 min com sócio incluído em menos de 24h</li>
+        <li><strong>Follow-up máximo 24h:</strong> urgência real — 7 dias para o evento</li>
+        <li><strong>Perfil compradores:</strong> <a href="https://duartebilhon.github.io/PAGINA-IMERS-O-AIOS/perfil-compradores-imersao.html" style="color:var(--gold);">Ver perfil compradores</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+  function togglePhase(header) {
+    const content = header.nextElementSibling;
+    const isOpen = content.classList.contains('open');
+    document.querySelectorAll('.phase-content').forEach(c => c.classList.remove('open'));
+    document.querySelectorAll('.phase-header').forEach(h => h.classList.remove('active'));
+    if (!isOpen) { content.classList.add('open'); header.classList.add('active'); }
+  }
+  function toggleObj(trigger) {
+    const body = trigger.nextElementSibling;
+    const arrow = trigger.querySelector('.objection-arrow');
+    const isOpen = body.classList.contains('open');
+    document.querySelectorAll('.objection-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.objection-arrow').forEach(a => a.style.transform = '');
+    if (!isOpen) { body.classList.add('open'); arrow.style.transform = 'rotate(180deg)'; }
+  }
+  function toggleCheck(box) { box.classList.toggle('checked'); }
+  let timerInterval = null;
+  let seconds = 50 * 60;
+  function startTimer() {
+    if (timerInterval) return;
+    timerInterval = setInterval(() => {
+      seconds--;
+      if (seconds < 0) { clearInterval(timerInterval); timerInterval = null; return; }
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      document.getElementById('timer').textContent = m + ':' + s;
+    }, 1000);
+  }
+  function resetTimer() {
+    clearInterval(timerInterval); timerInterval = null; seconds = 50 * 60;
+    document.getElementById('timer').textContent = '50:00';
+  }
+</script>
+</body>
+</html>

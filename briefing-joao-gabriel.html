@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing — João Gabriel | Call 10/03 15h</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a227;
+    --gold-light: #e8c04a;
+    --gold-dim: rgba(201,162,39,0.15);
+    --bg: #07070f;
+    --bg2: #0d0d1c;
+    --bg3: #12122a;
+    --indigo: #6366f1;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f97316;
+    --yellow: #eab308;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; }
+
+  .sticky-top { position: sticky; top: 0; z-index: 100; }
+  .header {
+    background: linear-gradient(135deg, #0d0d1c 0%, #12122a 100%);
+    border-bottom: 1px solid rgba(201,162,39,0.3);
+    padding: 40px 48px 32px;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
+  }
+  .header-left h1 { font-family: 'Playfair Display', serif; font-size: 36px; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+  .header-left h1 span { color: var(--gold); }
+  .header-left p { color: var(--muted); font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .badge-morno  { background: rgba(234,179,8,0.15); color: #facc15; border: 1px solid rgba(234,179,8,0.35); }
+  .badge-score  { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+  .badge-hoje   { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-cohort { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+  .badge-urgente { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+
+  .timer-box { background: var(--gold-dim); border: 1px solid rgba(201,162,39,0.4); border-radius: 12px; padding: 12px 20px; text-align: center; }
+  .timer-box .timer-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .timer-box .timer-value { font-size: 28px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+
+  .tabs { display: flex; padding: 0 48px; background: var(--bg2); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .tab { padding: 14px 22px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .content { padding: 40px 48px; max-width: 1000px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; }
+  .card-gold   { border-color: rgba(201,162,39,0.3); }
+  .card-red    { border-color: rgba(239,68,68,0.3); }
+  .card-green  { border-color: rgba(34,197,94,0.25); }
+  .card-cohort { border-color: rgba(99,102,241,0.35); background: rgba(99,102,241,0.04); }
+
+  .card-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); gap: 16px; }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--muted); font-size: 13px; min-width: 130px; }
+  .info-value { color: var(--text); font-size: 14px; text-align: right; flex: 1; }
+  .info-value.gold   { color: var(--gold); font-weight: 600; }
+  .info-value.green  { color: #4ade80; font-weight: 600; }
+  .info-value.red    { color: #f87171; font-weight: 600; }
+  .info-value.yellow { color: #facc15; font-weight: 600; }
+
+  .stat-card { background: var(--bg3); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 20px; text-align: center; }
+  .stat-card .stat-value { font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+  .stat-card .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .phase { background: var(--bg2); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+  .phase-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; cursor: pointer; transition: background 0.2s; }
+  .phase-header:hover { background: rgba(255,255,255,0.03); }
+  .phase-header.active { background: rgba(201,162,39,0.07); }
+  .phase-left { display: flex; align-items: center; gap: 16px; }
+  .phase-number { width: 36px; height: 36px; border-radius: 50%; background: var(--gold-dim); border: 1px solid rgba(201,162,39,0.4); color: var(--gold); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .phase-info h3 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .phase-info p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .phase-timer { background: var(--bg3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 4px 12px; font-size: 12px; color: var(--muted); }
+  .phase-content { display: none; padding: 0 24px 24px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .phase-content.open { display: block; }
+
+  .script-block { background: var(--bg3); border-left: 3px solid var(--gold); border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 14px 0; font-style: italic; color: #cbd5e1; font-size: 14px; line-height: 1.8; }
+  .script-block strong { color: var(--gold); font-style: normal; }
+
+  .tip-block { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 13px; color: #a5b4fc; }
+  .tip-block strong { color: #818cf8; }
+
+  .warning-block { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 13px; color: #fca5a5; }
+  .warning-block strong { color: #f87171; }
+
+  .cohort-block { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.35); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 13px; color: #c7d2fe; }
+  .cohort-block strong { color: #a5b4fc; }
+
+  .question-list { list-style: none; }
+  .question-list li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; color: var(--text); display: flex; gap: 12px; }
+  .question-list li:last-child { border-bottom: none; }
+  .question-list li::before { content: "→"; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+
+  .objection { background: var(--bg3); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+  .objection-trigger { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+  .objection-trigger:hover { background: rgba(255,255,255,0.03); }
+  .objection-label { font-size: 14px; font-weight: 500; color: #fca5a5; }
+  .objection-arrow { color: var(--muted); font-size: 12px; }
+  .objection-body { display: none; padding: 0 20px 18px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .objection-body.open { display: block; }
+  .objection-response { font-style: italic; color: #cbd5e1; font-size: 14px; line-height: 1.8; margin: 14px 0 10px; }
+  .objection-why { font-size: 12px; color: var(--muted); }
+
+  .checklist { list-style: none; }
+  .checklist li { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; color: var(--text); }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box { width: 20px; height: 20px; border: 2px solid rgba(201,162,39,0.4); border-radius: 4px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 1px; }
+  .check-box:hover { border-color: var(--gold); background: var(--gold-dim); }
+  .check-box.checked { background: var(--gold); border-color: var(--gold); }
+  .check-box.checked::after { content: "✓"; color: #07070f; font-size: 12px; font-weight: 700; }
+
+  .quote-block { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; color: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 24px; margin: 20px 0; line-height: 1.6; }
+
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; margin-top: 24px; }
+  .section-label:first-child { margin-top: 0; }
+
+  p { margin-bottom: 10px; font-size: 14px; color: var(--muted); }
+  ul.notes { padding-left: 18px; }
+  ul.notes li { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  ul.notes li strong { color: var(--text); }
+
+  .btn-save { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: var(--gold-dim); border: 1px solid rgba(201,162,39,0.4); border-radius: 10px; color: var(--gold); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 32px; }
+  .btn-save:hover { background: rgba(201,162,39,0.25); }
+
+  .cohort-banner { background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(139,92,246,0.15) 100%); border: 1px solid rgba(99,102,241,0.4); border-radius: 14px; padding: 20px 28px; margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
+  .cohort-banner .banner-icon { font-size: 32px; }
+  .cohort-banner .banner-text h3 { color: #a5b4fc; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .cohort-banner .banner-text p { color: #818cf8; font-size: 13px; margin: 0; }
+
+  @media print {
+    .tabs, .btn-save, .timer-box { display: none; }
+    .tab-panel { display: block !important; }
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-top">
+<div class="header">
+  <div class="header-left">
+    <p>Call de Diagnóstico · CoHort AIOS Advanced · Duarte</p>
+    <h1>João <span>Gabriel</span></h1>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+      <span class="badge badge-hoje">Hoje · 10/03 · 15h00</span>
+      <span class="badge badge-urgente">Call em breve</span>
+      <span class="badge badge-morno">Morno</span>
+      <span class="badge badge-score">Score 58 → 39</span>
+      <span class="badge badge-cohort">Foco: CoHort R$24.888</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="timer-box">
+      <div class="timer-label">Tempo de call</div>
+      <div class="timer-value" id="timer">50:00</div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="startTimer()" style="background:var(--gold);color:#07070f;border:none;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;">START</button>
+        <button onclick="resetTimer()" style="background:var(--bg3);color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">RESET</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('briefing')">Briefing</div>
+  <div class="tab" onclick="showTab('script')">Script da Call</div>
+  <div class="tab" onclick="showTab('objections')">Objeções</div>
+  <div class="tab" onclick="showTab('fechamento')">Fechamento</div>
+</div>
+</div>
+
+<div class="content">
+  <button class="btn-save" onclick="window.print()">Salvar como PDF</button>
+
+  <!-- TAB: BRIEFING -->
+  <div class="tab-panel active" id="tab-briefing">
+
+    <div class="cohort-banner">
+      <div class="banner-icon">🎯</div>
+      <div class="banner-text">
+        <h3>Call de CoHort — não de Imersão</h3>
+        <p>Lead sinalizou que não está preparado para R$100k. Foco total no CoHort AIOS Advanced — R$24.888 ou 12x R$2.488. Início em 08/04/2026.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-gold">
+        <div class="card-title"><span>👤</span> Perfil do Lead</div>
+        <div class="info-row"><span class="info-label">Nome</span><span class="info-value gold">João Gabriel</span></div>
+        <div class="info-row"><span class="info-label">Telefone</span><span class="info-value">55 86994747679</span></div>
+        <div class="info-row"><span class="info-label">Categoria</span><span class="info-value">Dono / Empresário</span></div>
+        <div class="info-row"><span class="info-label">SDR</span><span class="info-value">Taise</span></div>
+        <div class="info-row"><span class="info-label">Closer</span><span class="info-value gold">Duarte</span></div>
+        <div class="info-row"><span class="info-label">Aplicação</span><span class="info-value">09/03/2026 — 19h26</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>📊</span> Qualificação</div>
+        <div class="info-row"><span class="info-label">Faturamento</span><span class="info-value yellow">R$ 1M – R$ 3M</span></div>
+        <div class="info-row"><span class="info-label">Pode ir a Floripa</span><span class="info-value green">Sim, sem dúvida!</span></div>
+        <div class="info-row"><span class="info-label">Investir R$100k</span><span class="info-value red">Não preparado agora</span></div>
+        <div class="info-row"><span class="info-label">Score bruto</span><span class="info-value">58 / 100</span></div>
+        <div class="info-row"><span class="info-label">Score pós-trava</span><span class="info-value yellow">39 / 100 (Morno)</span></div>
+        <div class="info-row"><span class="info-label">Temperatura</span><span class="info-value yellow">Morno</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🏢</span> O Negócio — Infoproduto + SaaS · Nicho Visto EUA</div>
+      <div class="quote-block">
+        "Infoproduto + SaaS no nicho de visto para os EUA. Público são trabalhadores comuns que querem fazer o mesmo trabalho nos EUA ganhando em dólar. Temos funil de lançamento e webinário."
+      </div>
+      <div class="section-label">O que é o negócio</div>
+      <ul class="notes">
+        <li><strong>Nicho:</strong> visto americano para trabalhadores brasileiros — ajuda pessoas comuns a migrar para os EUA e ganhar em dólar fazendo o mesmo trabalho que fazem no Brasil</li>
+        <li><strong>Modelo de receita:</strong> infoproduto (curso/treinamento) + SaaS — combinação de recorrência com lançamento</li>
+        <li><strong>Canais de aquisição:</strong> funil de lançamento + webinário — operação de marketing digital estruturada</li>
+        <li><strong>Público-alvo:</strong> trabalhadores comuns (não empreendedores) — ticket médio provavelmente mais baixo, mas volume alto</li>
+      </ul>
+      <div class="section-label">Por que quer o AIOS (palavras dele)</div>
+      <div class="warning-block">
+        <strong>"Pra conseguir me dar velocidade e mais qualidade na minha operação"</strong> — resposta curta mas direta. Ele sabe o que quer: escala com menos fricção. Não precisa ser convencido do problema — precisa ver como o AIOS resolve especificamente.
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="stat-card">
+        <div class="stat-value">R$1–3M</div>
+        <div class="stat-label">Faturamento anual</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">2</div>
+        <div class="stat-label">Produtos (info + SaaS)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">R$24k</div>
+        <div class="stat-label">Ticket alvo (CoHort)</div>
+      </div>
+    </div>
+
+    <div class="card card-gold" style="margin-top:24px;">
+      <div class="card-title"><span>⚡</span> Inteligência Estratégica — Onde a IA Muda o Jogo</div>
+
+      <div class="section-label">No funil de lançamento + webinário</div>
+      <ul class="notes">
+        <li><strong>Agente de follow-up pós-webinário:</strong> sequência automática para quem assistiu mas não comprou — maior alavanca de conversão de lançamento</li>
+        <li><strong>Agente de SDR:</strong> qualificação e aquecimento de leads antes do webinário — aumenta show rate e taxa de conversão</li>
+        <li><strong>Agente de copy:</strong> gera variações de copy para anúncios, emails e páginas — velocidade que ele pediu explicitamente</li>
+        <li><strong>Agente de análise:</strong> monitora métricas do funil (CPL, taxa de show, conversão) e alerta sobre gargalos em tempo real</li>
+      </ul>
+
+      <div class="section-label">No SaaS</div>
+      <ul class="notes">
+        <li><strong>Agente de suporte:</strong> atende dúvidas de usuários 24/7 — reduz churn por abandono/dúvida não respondida</li>
+        <li><strong>Agente de onboarding:</strong> conduz novos usuários pelos primeiros passos — aumenta ativação e retenção</li>
+        <li><strong>Agente de upsell:</strong> identifica usuários engajados e faz oferta de upgrade no momento certo</li>
+      </ul>
+
+      <div class="section-label">A dor central dele</div>
+      <div class="cohort-block">
+        <strong>Velocidade + qualidade.</strong> Ele tem um negócio digital bem estruturado (lançamento + SaaS + webinário) mas provavelmente está sendo o gargalo — escrevendo copy, respondendo leads, analisando métricas manualmente. Os agentes vão tirar isso do prato dele e ele pode focar no que só ele faz: estratégia e produto.
+      </div>
+    </div>
+
+    <div class="card card-red">
+      <div class="card-title"><span>⚠️</span> Pontos de Atenção</div>
+      <ul class="notes">
+        <li><strong>Resposta curta no formulário:</strong> "velocidade e qualidade" é vaga. Na call, aprofunde: velocidade em qual parte? Qual gargalo específico? Isso vai calibrar a apresentação.</li>
+        <li><strong>Sem info de sócio/segunda cadeira:</strong> verifique no início se tem sócio ou decisor adicional que precisa estar na conversa.</li>
+        <li><strong>Nicho de imigração/visto:</strong> mercado sensível — pode ter restrições regulatórias dependendo de como o produto é estruturado. Não questione, mas saiba que pode surgir como objeção técnica.</li>
+        <li><strong>Faturamento R$1–3M:</strong> ROI precisa ser apresentado em termos concretos para o estágio dele — não use exemplos de R$5M+.</li>
+        <li><strong>Call é HOJE às 15h:</strong> pouco tempo de preparação — leia esse briefing com atenção antes de entrar.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- TAB: SCRIPT -->
+  <div class="tab-panel" id="tab-script">
+
+    <div class="cohort-block" style="margin-bottom:24px;">
+      <strong>Contexto:</strong> Lead aplicou ontem (09/03) e a call é hoje. É uma janela curta — ele está quente no timing mas Morno em score. Seja direto, mostre o CoHort como o próximo passo concreto para a operação dele.
+    </div>
+
+    <!-- FASE 1 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">1</div>
+          <div class="phase-info"><h3>Rapport & Abertura</h3><p>Quebrar gelo, alinhar expectativa, verificar decisores</p></div>
+        </div>
+        <span class="phase-timer">3–5 min</span>
+      </div>
+      <div class="phase-content open">
+        <div class="script-block">
+          "João Gabriel, boa tarde! Duarte aqui da Bilhon. Você aplicou ontem — boa iniciativa, raro ter esse nível de agilidade. Antes de começar, você está sozinho na call ou tem alguém do negócio com você?"
+        </div>
+        <div class="script-block">
+          "Esses 50 minutos são para eu entender a operação sua de verdade — lançamento, SaaS, webinário. A partir daí a gente vê como o CoHort AIOS Advanced se encaixa de forma que faça sentido financeiro e operacional pra você. Pode ser?"
+        </div>
+        <div class="tip-block">
+          <strong>Aplicou ontem, call hoje</strong> — use isso para estabelecer urgência desde o início. Ele agiu rápido; reforce que essa postura é exatamente o perfil de quem se dá bem no CoHort.
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 2 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">2</div>
+          <div class="phase-info"><h3>S — Situação</h3><p>Mapear a operação: lançamento, webinário, SaaS, time</p></div>
+        </div>
+        <span class="phase-timer">7–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="tip-block">
+          <strong>Negócio já identificado:</strong> infoproduto + SaaS no nicho de visto EUA, com funil de lançamento e webinário. Não peça o básico — aprofunde no que já sabe.
+        </div>
+        <div class="section-label">Perguntas de situação</div>
+        <ul class="question-list">
+          <li>Você tem o infoproduto e o SaaS rodando em paralelo — qual dos dois traz mais receita hoje?</li>
+          <li>O webinário, você faz ao vivo ou tem uma versão automatizada rodando? Qual a frequência?</li>
+          <li>No funil de lançamento, você tem uma operação de tráfego pago rodando ou é mais orgânico?</li>
+          <li>Você tem time de operações ou ainda é você tocando a maior parte do dia a dia?</li>
+          <li>O SaaS — é uma ferramenta que você criou para os seus alunos ou é um produto separado com base própria de clientes?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FASE 3 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">3</div>
+          <div class="phase-info"><h3>P — Problema</h3><p>Onde está o gargalo real — velocidade ou qualidade?</p></div>
+        </div>
+        <span class="phase-timer">7–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="tip-block">
+          <strong>Ele disse "velocidade e qualidade".</strong> Descubra qual é o gargalo concreto — copy, follow-up, suporte, análise de dados? Isso vai calibrar quais agentes apresentar.
+        </div>
+        <div class="section-label">Perguntas de problema</div>
+        <ul class="question-list">
+          <li>Quando você falou em velocidade e qualidade na operação — onde você sente mais esse gargalo hoje? No lançamento, no SaaS ou nos dois?</li>
+          <li>No webinário, qual é a sua taxa de conversão hoje? E onde você acha que está perdendo mais — antes, durante ou depois do webinário?</li>
+          <li>Tem alguma parte da operação que você sabe que deveria estar rodando mas ainda não está por falta de tempo ou capacidade?</li>
+          <li>Copy e criativos para o funil — você escreve você mesmo ou tem alguém? Quanto tempo isso consome por semana?</li>
+          <li>No SaaS, como é o suporte aos usuários hoje? Tem alguém dedicado ou ainda cai em você?</li>
+        </ul>
+        <div class="script-block">
+          <strong>[Se ele mencionar copy/conteúdo]</strong> "Isso é exatamente o tipo de coisa que um agente de IA resolve — você define o posicionamento e a voz, o agente produz variações em velocidade que uma pessoa nunca conseguiria. Sem perder sua identidade."
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 4 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">4</div>
+          <div class="phase-info"><h3>I — Implicação</h3><p>Amplificar o custo de continuar no mesmo ritmo</p></div>
+        </div>
+        <span class="phase-timer">7–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="section-label">Perguntas de implicação</div>
+        <ul class="question-list">
+          <li>Se esse gargalo de [dor que ele mencionou] continuar por mais 6 meses, o que você deixa de lançar ou crescer?</li>
+          <li>Você tem uma base de leads que assistiu o webinário mas não comprou — esses leads estão sendo trabalhados com follow-up ou estão esfriando?</li>
+          <li>Se um concorrente no mesmo nicho de visto EUA implementar IA no funil antes de você, como isso muda a competição?</li>
+        </ul>
+        <div class="script-block">
+          <strong>[Âncora de ROI para o estágio dele]</strong> "Você fatura entre R$1M e R$3M. Se os agentes aumentarem 10% a conversão do seu webinário — estamos falando de R$100k a R$300k a mais por ano. O CoHort custa R$24.888. Você recupera em semanas, não em meses."
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 5 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">5</div>
+          <div class="phase-info"><h3>N — Necessidade & Apresentação do CoHort</h3><p>Conectar os agentes à operação específica dele</p></div>
+        </div>
+        <span class="phase-timer">8–10 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="script-block">
+          "Com base no que você me contou — [resumir 2-3 dores] — o CoHort AIOS Advanced foi feito pra isso. 8 semanas online, começa dia 08 de abril, você não para a operação. Você vai sair com agentes rodando no seu negócio."
+        </div>
+        <div class="section-label">Agentes que ele vai construir (personalizado)</div>
+        <ul class="notes">
+          <li><strong>Agente de follow-up pós-webinário:</strong> sequência automática para leads que assistiram mas não compraram — maior oportunidade do funil dele</li>
+          <li><strong>Agente de copy:</strong> gera variações de email, anúncio e página com a voz e posicionamento dele — velocidade que ele pediu</li>
+          <li><strong>Agente de qualificação de leads:</strong> filtra e aquece antes do webinário, aumenta show rate e conversão</li>
+          <li><strong>Agente de suporte SaaS:</strong> responde dúvidas dos usuários 24/7 — reduz churn por atendimento lento</li>
+          <li><strong>Agente de análise do funil:</strong> monitora métricas e alerta sobre gargalos — qualidade que ele pediu</li>
+        </ul>
+        <div class="script-block">
+          "São 80+ agentes prontos. Você não parte do zero — você adapta pro seu nicho de visto EUA. E tem comunidade por 12 meses para iterar e crescer junto."
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 6 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-left">
+          <div class="phase-number">6</div>
+          <div class="phase-info"><h3>Fechamento</h3><p>Colher decisão, enviar link, dar boas-vindas</p></div>
+        </div>
+        <span class="phase-timer">5–8 min</span>
+      </div>
+      <div class="phase-content">
+        <div class="script-block">
+          "João Gabriel, o CoHort começa em 08 de abril — são menos de 30 dias. Você aplicou ontem, está aqui hoje. Essa agilidade é o perfil certo. Faz sentido garantir sua vaga agora?"
+        </div>
+        <div class="tip-block"><strong>Silêncio após essa frase.</strong> Não preencha. Deixe ele responder primeiro.</div>
+        <div class="script-block">
+          <strong>[Se hesitar]</strong> "O que você precisa ver ou entender para tomar essa decisão hoje?"
+        </div>
+        <div class="script-block">
+          <strong>[Confirmação]</strong> "Perfeito. Vou te mandar o link agora no WhatsApp. Você prefere à vista ou parcelar em 12x de R$2.488?"
+        </div>
+        <div class="warning-block">
+          <strong>Não desligues antes de:</strong> enviar link + confirmar recebimento + combinar forma e data de pagamento.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB: OBJEÇÕES -->
+  <div class="tab-panel" id="tab-objections">
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Preciso de mais tempo pra decidir"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">"Entendo. O que te falta pra decidir hoje? Posso responder agora mesmo. O CoHort começa em 08 de abril — quanto mais você espera, menos tempo de preparação antes do início."</div>
+        <div class="objection-why">Por que funciona: transforma o adiamento em uma conversa concreta sobre o que falta, e usa a data limite como urgência real.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"R$24.888 está pesado agora"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">"Faz sentido pensar assim. Em 12x é R$2.488 por mês — menos do que contratar um assistente de marketing. E o primeiro agente que você criar vai trabalhar por você todo dia, sem folga. Se o follow-up do seu webinário converter mais 2 vendas extras por mês, o CoHort já se pagou."</div>
+        <div class="objection-why">Por que funciona: ancora no parcelamento e conecta diretamente ao webinário, que é o principal gerador de receita dele.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Já uso ferramentas de IA / já tenho automações"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">"Ótimo — quer dizer que você já entende o valor. A diferença do AIOS é que não é uma ferramenta isolada. É um sistema de agentes que se comunicam, têm memória do seu negócio e tomam decisões em cadeia. O que você tem hoje provavelmente são peças separadas. O CoHort te ensina a montar o squad completo pra sua operação."</div>
+        <div class="objection-why">Por que funciona: eleva o nível sem invalidar o que ele já faz.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Não tenho tempo pra fazer o CoHort agora"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">"O CoHort foi feito pra quem não tem tempo — é online, gravado, você assiste quando quiser. E o ponto é exatamente esse: você investe algumas horas agora pra criar agentes que vão te devolver horas todo mês. Não é mais uma coisa no seu prato — é o que vai tirar coisas do seu prato."</div>
+        <div class="objection-why">Por que funciona: inverte a lógica de "mais tempo consumido" para "tempo gerado".</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Meu nicho é muito específico, não sei se IA se aplica"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">"Na verdade, nicho específico é vantagem — os agentes que você criar vão ser calibrados exatamente para o contexto de visto EUA, para o seu público de trabalhadores brasileiros que querem migrar. Quanto mais específico, mais potente o agente. Um agente genérico não existe no AIOS — tudo é construído pra seu negócio."</div>
+        <div class="objection-why">Por que funciona: transforma a especificidade do nicho em argumento a favor, não contra.</div>
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-trigger" onclick="toggleObj(this)">
+        <span class="objection-label">"Não sei programar / não tenho time técnico"</span>
+        <span class="objection-arrow">▼</span>
+      </div>
+      <div class="objection-body">
+        <div class="objection-response">"O CoHort foi construído pra empresários, não pra devs. Você precisa ter Claude Pro — só isso. A metodologia não exige código. Você já tem o SaaS no seu negócio — claramente não tem medo de tecnologia. O AIOS é mais simples do que parece."</div>
+        <div class="objection-why">Por que funciona: usa o próprio SaaS dele como prova de que ele não tem barreira técnica real.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB: FECHAMENTO -->
+  <div class="tab-panel" id="tab-fechamento">
+
+    <div class="card card-green">
+      <div class="card-title"><span>✅</span> Checklist Pré-Fechamento</div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Verificou se tem sócio ou decisor adicional envolvido</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Identificou o gargalo principal (velocidade em copy? follow-up? suporte SaaS?)</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>ROI apresentado no contexto do webinário/lançamento dele</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Conectou os agentes às dores específicas que ele mencionou</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Mencionou o parcelamento (12x R$2.488) como opção</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Pergunta de fechamento feita + silêncio mantido</li>
+      </ul>
+    </div>
+
+    <div class="card card-cohort">
+      <div class="card-title"><span>🎓</span> Frases de Fechamento — CoHort</div>
+
+      <div class="section-label">Fechamento direto</div>
+      <div class="script-block">"Você tem a operação, o produto e o nicho. O que falta é velocidade e qualidade — você mesmo disse isso. O CoHort é exatamente isso. Faz sentido garantir sua vaga agora?"</div>
+
+      <div class="section-label">Fechamento por urgência</div>
+      <div class="script-block">"Começa dia 08 de abril. Você aplicou ontem e está aqui hoje — essa agilidade é o que separa quem cresce de quem fica parado. Vagas limitadas: 50 no total."</div>
+
+      <div class="section-label">Fechamento por parcela</div>
+      <div class="script-block">"Em 12x de R$2.488 — é menos do que contratar um redator. E os agentes trabalham por você todo dia. Se seu webinário converter mais 2 vendas por mês, o CoHort já se pagou no primeiro mês."</div>
+
+      <div class="section-label">Fechamento por ROI do webinário</div>
+      <div class="script-block">"Você tem um webinário rodando. Imagina um agente de follow-up que trabalha todos os leads que assistiram mas não compraram — automaticamente, com a sua voz, no timing certo. Isso sozinho pode dobrar a conversão do seu lançamento."</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>💳</span> Pós-Fechamento — Não Desligues Antes</div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Link de pagamento enviado no WhatsApp durante a call</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Confirmação de que ele recebeu o link</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Forma de pagamento definida (à vista ou 12x)</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Data de pagamento acordada se não for imediata</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Boas-vindas — "você agora está dentro do CoHort, começa em 08/04"</li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div>Próximo passo claro (acesso à plataforma, grupo)</li>
+      </ul>
+    </div>
+
+    <div class="card" style="background:rgba(201,162,39,0.05);border-color:rgba(201,162,39,0.3);">
+      <div class="card-title"><span>📋</span> Produto — CoHort AIOS Advanced</div>
+      <div class="info-row"><span class="info-label">Produto</span><span class="info-value gold">CoHort AIOS Advanced — Turma 2</span></div>
+      <div class="info-row"><span class="info-label">Preço</span><span class="info-value gold">R$ 24.888 (ou 12x R$ 2.488)</span></div>
+      <div class="info-row"><span class="info-label">Início</span><span class="info-value">08 de abril de 2026</span></div>
+      <div class="info-row"><span class="info-label">Formato</span><span class="info-value">Online · 8 semanas · 80+ agentes IA</span></div>
+      <div class="info-row"><span class="info-label">Inclui</span><span class="info-value">Comunidade 12 meses · Certificação vitalícia</span></div>
+      <div class="info-row"><span class="info-label">ROI payback</span><span class="info-value green">Menos de 7 dias · ROI mês 1: 338%</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+  function togglePhase(header) {
+    const content = header.nextElementSibling;
+    const isOpen = content.classList.contains('open');
+    content.classList.toggle('open', !isOpen);
+    header.classList.toggle('active', !isOpen);
+  }
+  function toggleObj(trigger) {
+    const body = trigger.nextElementSibling;
+    const arrow = trigger.querySelector('.objection-arrow');
+    body.classList.toggle('open');
+    arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+  }
+  function toggleCheck(box) { box.classList.toggle('checked'); }
+
+  let timerInterval, seconds = 50 * 60;
+  function updateDisplay() {
+    const m = Math.floor(seconds / 60), s = seconds % 60;
+    document.getElementById('timer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    document.getElementById('timer').style.color = seconds <= 300 ? '#ef4444' : seconds <= 600 ? '#f97316' : 'var(--gold)';
+  }
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (seconds > 0) { seconds--; updateDisplay(); }
+      else { clearInterval(timerInterval); document.getElementById('timer').textContent = 'FIM'; }
+    }, 1000);
+  }
+  function resetTimer() { clearInterval(timerInterval); seconds = 50 * 60; updateDisplay(); }
+</script>
+</body>
+</html>
