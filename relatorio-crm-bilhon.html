@@ -4,512 +4,768 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Relatório CRM — Bilhon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg:        #08080d;
+      --surface:   #0f0f18;
+      --surface-2: #151522;
+      --surface-3: #1c1c2e;
+      --border:    #1e1e32;
+      --border-2:  #252540;
+      --primary:   #4f8ef7;
+      --primary-dim:#1e3a6e;
+      --danger:    #ef4444;
+      --danger-dim:#2d1414;
+      --success:   #22c55e;
+      --success-dim:#122812;
+      --warn:      #f59e0b;
+      --text-1:    #f1f1fa;
+      --text-2:    #a0a0c0;
+      --text-3:    #5a5a80;
+      --radius:    12px;
+      --radius-lg: 18px;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #0f0f13;
-      color: #e8e8f0;
-      font-size: 17px;
-      line-height: 1.7;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      font-size: 16px;
+      line-height: 1.65;
     }
 
+    /* ───── HEADER ───── */
     .header {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      padding: 60px 40px;
-      text-align: center;
-      border-bottom: 3px solid #4f8ef7;
+      position: relative;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
     }
 
-    .header .label {
-      font-size: 13px;
-      letter-spacing: 3px;
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,142,247,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 64px 32px 56px;
+      position: relative;
+    }
+
+    .header-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: #4f8ef7;
-      margin-bottom: 16px;
-      font-weight: 600;
+      color: var(--primary);
+      background: rgba(79,142,247,.08);
+      border: 1px solid rgba(79,142,247,.2);
+      border-radius: 40px;
+      padding: 5px 14px;
+      margin-bottom: 24px;
+    }
+
+    .header-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
     }
 
     .header h1 {
-      font-size: 42px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 12px;
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--text-1);
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 14px;
     }
 
-    .header p {
-      font-size: 18px;
-      color: #a0aec0;
+    .header h1 span {
+      color: var(--primary);
     }
 
-    .container {
-      max-width: 1000px;
+    .header-sub {
+      font-size: 17px;
+      color: var(--text-2);
+      max-width: 520px;
+    }
+
+    /* ───── SUMMARY BAR ───── */
+    .summary-bar {
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-bar-inner {
+      max-width: 1020px;
       margin: 0 auto;
-      padding: 50px 30px;
+      padding: 0 32px;
+      display: flex;
+      align-items: stretch;
     }
 
-    /* SEÇÕES */
-    .section {
-      margin-bottom: 60px;
+    .summary-item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 0;
+      border-right: 1px solid var(--border);
     }
 
-    .section-title {
-      font-size: 13px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #4f8ef7;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+    .summary-item:last-child { border-right: none; }
+    .summary-item + .summary-item { padding-left: 28px; }
 
-    .section h2 {
-      font-size: 30px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #2a2a3e;
-    }
-
-    /* DIAGNÓSTICO — cards de problema */
-    .problems-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .problem-card {
-      background: #1a1a2e;
-      border: 1px solid #2a2a3e;
-      border-left: 4px solid #e53e3e;
+    .summary-icon {
+      width: 38px; height: 38px;
       border-radius: 10px;
-      padding: 20px 22px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
     }
 
-    .problem-card .icon {
+    .si-red   { background: var(--danger-dim); }
+    .si-blue  { background: var(--primary-dim); }
+    .si-green { background: var(--success-dim); }
+    .si-warn  { background: rgba(245,158,11,.1); }
+
+    .summary-info .val {
       font-size: 22px;
-      margin-bottom: 10px;
+      font-weight: 800;
+      color: var(--text-1);
+      line-height: 1;
     }
 
-    .problem-card h3 {
-      font-size: 16px;
+    .summary-info .lbl {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 3px;
+    }
+
+    /* ───── LAYOUT ───── */
+    .container {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 60px 32px;
+    }
+
+    .section {
+      margin-bottom: 72px;
+      animation: fadeUp .4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section:nth-child(2) { animation-delay: .05s; }
+    .section:nth-child(3) { animation-delay: .10s; }
+    .section:nth-child(4) { animation-delay: .15s; }
+    .section:nth-child(5) { animation-delay: .20s; }
+    .section:nth-child(6) { animation-delay: .25s; }
+    .section:nth-child(7) { animation-delay: .30s; }
+
+    .section-eyebrow {
+      font-size: 11px;
       font-weight: 700;
-      color: #fc8181;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--primary);
       margin-bottom: 6px;
     }
 
-    .problem-card p {
-      font-size: 15px;
-      color: #a0aec0;
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-1);
+      letter-spacing: -.5px;
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
     }
 
-    /* STACK DE FERRAMENTAS */
+    /* ───── PROBLEM CARDS ───── */
+    .problems-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .problem-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--danger);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .problem-card:hover {
+      border-color: var(--danger);
+      transform: translateY(-2px);
+    }
+
+    .problem-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: var(--danger-dim);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .problem-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fca5a5;
+      margin-bottom: 7px;
+    }
+
+    .problem-card p {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ───── TOOL CARDS ───── */
     .tools-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     .tool-card {
-      background: #1a1a2e;
-      border: 1px solid #2a2a3e;
-      border-radius: 10px;
-      padding: 18px 20px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
+      transition: border-color .2s;
     }
 
-    .tool-card .tool-name {
-      font-size: 16px;
+    .tool-card:hover { border-color: var(--border-2); }
+
+    .tool-name {
+      font-size: 15px;
       font-weight: 700;
-      color: #e2e8f0;
+      color: var(--text-1);
     }
 
-    .tool-card .tool-role {
-      font-size: 14px;
-      color: #718096;
+    .tool-role {
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.4;
     }
 
-    .tool-card .tool-badge {
-      display: inline-block;
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       font-size: 11px;
       font-weight: 700;
       padding: 3px 10px;
       border-radius: 20px;
-      margin-top: 4px;
+      margin-top: 6px;
       width: fit-content;
     }
 
-    .badge-critical { background: #2d1515; color: #fc8181; border: 1px solid #e53e3e; }
-    .badge-keep    { background: #1a2d1a; color: #68d391; border: 1px solid #38a169; }
-    .badge-replace { background: #2d1515; color: #fc8181; border: 1px solid #e53e3e; }
-    .badge-neutral { background: #1a1a2e; color: #a0aec0; border: 1px solid #4a5568; }
-
-    /* REQUISITOS */
-    .req-block {
-      background: #1a1a2e;
-      border: 1px solid #2a2a3e;
-      border-radius: 12px;
-      padding: 28px 30px;
-      margin-bottom: 16px;
+    .tool-badge::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
     }
 
+    .badge-keep    { background: var(--success-dim); color: #86efac; border: 1px solid rgba(34,197,94,.25); }
+    .badge-keep::before { background: #22c55e; }
+    .badge-replace { background: var(--danger-dim); color: #fca5a5; border: 1px solid rgba(239,68,68,.25); }
+    .badge-replace::before { background: #ef4444; }
+
+    /* ───── REQ BLOCKS ───── */
+    .req-block {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px 28px;
+      margin-bottom: 12px;
+      transition: border-color .2s;
+    }
+
+    .req-block:hover { border-color: var(--border-2); }
+
     .req-block h3 {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
-      color: #fff;
+      color: var(--text-1);
       margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .req-block h3 .dot {
-      width: 10px;
-      height: 10px;
+    .req-dot {
+      width: 8px; height: 8px;
       border-radius: 50%;
-      background: #4f8ef7;
+      background: var(--primary);
       flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(79,142,247,.5);
     }
 
     .req-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
     }
 
     .req-list li {
-      font-size: 16px;
-      color: #cbd5e0;
+      font-size: 15px;
+      color: var(--text-2);
       padding-left: 20px;
       position: relative;
+      line-height: 1.5;
     }
 
     .req-list li::before {
       content: '→';
       position: absolute;
       left: 0;
-      color: #4f8ef7;
+      color: var(--primary);
       font-weight: 700;
     }
 
-    /* COMPARATIVO */
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-      border-radius: 12px;
+    /* ───── TABLE ───── */
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       overflow: hidden;
     }
 
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
     .comparison-table thead tr {
-      background: #1e2a4a;
+      background: var(--surface-3);
+      border-bottom: 1px solid var(--border);
     }
 
     .comparison-table th {
-      padding: 18px 20px;
+      padding: 16px 20px;
       text-align: left;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 700;
-      color: #a0aec0;
+      color: var(--text-3);
       letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .comparison-table th:nth-child(2) { color: #68d391; }
-    .comparison-table th:nth-child(3) { color: #fc8181; }
+    .comparison-table th:nth-child(2) { color: var(--success); }
+    .comparison-table th:nth-child(3) { color: var(--text-3); }
 
     .comparison-table tbody tr {
-      border-bottom: 1px solid #1a1a2e;
-      transition: background 0.2s;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
     }
 
-    .comparison-table tbody tr:hover {
-      background: #1e1e2e;
-    }
+    .comparison-table tbody tr:last-child { border-bottom: none; }
+
+    .comparison-table tbody tr:hover { background: var(--surface-3); }
 
     .comparison-table td {
-      padding: 16px 20px;
-      font-size: 15px;
-      background: #141420;
+      padding: 15px 20px;
+      font-size: 14px;
     }
 
     .comparison-table td:first-child {
-      color: #e2e8f0;
+      color: var(--text-2);
       font-weight: 600;
     }
 
-    .comparison-table td:nth-child(2) { color: #68d391; }
-    .comparison-table td:nth-child(3) { color: #a0aec0; }
+    .comparison-table td:nth-child(2) {
+      color: var(--success);
+      font-weight: 500;
+    }
+
+    .comparison-table td:nth-child(3) {
+      color: var(--text-3);
+    }
+
+    .table-header-hubspot {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .winner-chip {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--success-dim);
+      color: var(--success);
+      border: 1px solid rgba(34,197,94,.3);
+      letter-spacing: .5px;
+    }
+
+    /* ───── RECOMMENDATION ───── */
+    .recommendation-box {
+      position: relative;
+      background: var(--surface-2);
+      border: 1px solid rgba(79,142,247,.3);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .recommendation-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(79,142,247,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .rec-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .recommendation-box h2 {
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--text-1);
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .recommendation-box p {
+      font-size: 16px;
+      color: var(--text-2);
+      max-width: 580px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
 
     .winner-badge {
-      display: inline-block;
-      background: #1a3a2a;
-      color: #68d391;
-      border: 1px solid #38a169;
-      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--success-dim);
+      color: var(--success);
+      border: 1px solid rgba(34,197,94,.3);
+      font-size: 14px;
       font-weight: 700;
       padding: 4px 14px;
       border-radius: 20px;
       margin-left: 12px;
       vertical-align: middle;
+      position: relative;
+      top: -4px;
     }
 
-    /* RECOMENDAÇÃO */
-    .recommendation-box {
-      background: linear-gradient(135deg, #1a2d4a, #0f2a3a);
-      border: 2px solid #4f8ef7;
-      border-radius: 16px;
-      padding: 36px;
-      text-align: center;
-    }
-
-    .recommendation-box .rec-label {
-      font-size: 13px;
-      letter-spacing: 3px;
-      color: #4f8ef7;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .recommendation-box h2 {
-      font-size: 36px;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 14px;
-      border: none;
-      padding: 0;
-    }
-
-    .recommendation-box p {
-      font-size: 17px;
-      color: #a0aec0;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* PLANO DE AÇÃO */
+    /* ───── PHASES ───── */
     .phase-block {
-      background: #1a1a2e;
-      border: 1px solid #2a2a3e;
-      border-radius: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       padding: 28px 30px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      transition: border-color .2s;
     }
+
+    .phase-block:hover { border-color: var(--border-2); }
 
     .phase-header {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 20px;
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
     .phase-number {
-      width: 42px;
-      height: 42px;
+      width: 44px; height: 44px;
       border-radius: 50%;
-      background: #4f8ef7;
+      background: var(--primary);
       color: #fff;
       font-size: 18px;
       font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      box-shadow: 0 0 20px rgba(79,142,247,.35);
     }
 
     .phase-info h3 {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 700;
-      color: #fff;
+      color: var(--text-1);
+      line-height: 1.3;
     }
 
-    .phase-info span {
-      font-size: 14px;
-      color: #4f8ef7;
+    .phase-tag {
+      display: inline-block;
+      font-size: 12px;
       font-weight: 600;
+      color: var(--primary);
+      background: rgba(79,142,247,.1);
+      border: 1px solid rgba(79,142,247,.2);
+      border-radius: 20px;
+      padding: 2px 10px;
+      margin-top: 4px;
     }
 
     .action-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .action-list li {
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      font-size: 16px;
-      color: #cbd5e0;
+      font-size: 15px;
+      color: var(--text-2);
     }
 
     .checkbox {
-      width: 20px;
-      height: 20px;
-      border: 2px solid #4a5568;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border-2);
       border-radius: 5px;
       flex-shrink: 0;
       margin-top: 2px;
     }
 
-    /* RESPONSÁVEIS */
+    /* ───── OWNERS ───── */
     .owners-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 8px;
+      gap: 14px;
+      margin-top: 16px;
     }
 
     .owner-card {
-      background: #1a1a2e;
-      border: 1px solid #2a2a3e;
-      border-radius: 12px;
-      padding: 22px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
       text-align: center;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .owner-card:hover {
+      border-color: var(--border-2);
+      transform: translateY(-2px);
     }
 
     .owner-avatar {
-      width: 50px;
-      height: 50px;
+      width: 52px; height: 52px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #4f8ef7, #764ba2);
-      margin: 0 auto 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), #7c5cbf);
+      margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
       font-size: 20px;
       font-weight: 800;
       color: #fff;
+      box-shadow: 0 4px 16px rgba(79,142,247,.25);
     }
 
     .owner-name {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
+      color: var(--text-1);
+      margin-bottom: 4px;
     }
 
     .owner-role {
-      font-size: 14px;
-      color: #4f8ef7;
+      font-size: 13px;
+      color: var(--primary);
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .owner-task {
-      font-size: 14px;
-      color: #718096;
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.5;
     }
 
-    /* PERGUNTAS DEMO */
+    /* ───── QUESTIONS ───── */
     .questions-group {
       margin-bottom: 32px;
     }
 
-    .questions-group h3 {
-      font-size: 16px;
+    .q-group-header {
+      font-size: 12px;
       font-weight: 700;
-      color: #4f8ef7;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 14px;
+      color: var(--primary);
+      margin-bottom: 12px;
       padding-bottom: 10px;
-      border-bottom: 1px solid #2a2a3e;
+      border-bottom: 1px solid var(--border);
     }
 
     .question-item {
       display: flex;
       gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid #1a1a2e;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
       align-items: flex-start;
+      transition: background .15s;
     }
 
-    .question-item:last-child {
-      border-bottom: none;
-    }
+    .question-item:last-child { border-bottom: none; }
 
     .q-number {
-      width: 28px;
-      height: 28px;
+      width: 26px; height: 26px;
       border-radius: 50%;
-      background: #1e2a4a;
-      border: 1px solid #4f8ef7;
-      color: #4f8ef7;
-      font-size: 13px;
+      background: var(--surface-3);
+      border: 1px solid var(--primary-dim);
+      color: var(--primary);
+      font-size: 12px;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      margin-top: 1px;
     }
 
     .q-text {
-      font-size: 16px;
-      color: #cbd5e0;
-      padding-top: 3px;
+      font-size: 15px;
+      color: var(--text-2);
+      padding-top: 2px;
+      line-height: 1.6;
     }
 
-    /* FOOTER */
+    /* ───── FOOTER ───── */
     .footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 32px;
       text-align: center;
-      padding: 40px;
-      border-top: 1px solid #1a1a2e;
-      color: #4a5568;
-      font-size: 14px;
+      color: var(--text-3);
+      font-size: 13px;
     }
 
-    @media (max-width: 700px) {
-      .problems-grid, .tools-grid, .owners-grid { grid-template-columns: 1fr; }
-      .header h1 { font-size: 28px; }
+    .footer strong {
+      color: var(--text-2);
+    }
+
+    /* ───── RESPONSIVE ───── */
+    @media (max-width: 720px) {
+      .problems-grid,
+      .tools-grid,
+      .owners-grid { grid-template-columns: 1fr; }
+      .summary-bar-inner { flex-direction: column; }
+      .summary-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .summary-item + .summary-item { padding-left: 0; }
+      .header h1 { font-size: 32px; }
+      .recommendation-box { padding: 28px 20px; }
+      .recommendation-box h2 { font-size: 28px; }
+      .container { padding: 40px 20px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="label">Relatório Estratégico</div>
-    <h1>CRM para Bilhon</h1>
-    <p>Análise completa da call + decisão + perguntas para demo HubSpot</p>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-eyebrow">Relatório Estratégico · Bilhon</div>
+      <h1>CRM para <span>Bilhon</span></h1>
+      <p class="header-sub">Análise completa da call · Decisão de ferramenta · Perguntas para demo HubSpot</p>
+    </div>
+  </header>
+
+  <!-- SUMMARY BAR -->
+  <div class="summary-bar">
+    <div class="summary-bar-inner">
+      <div class="summary-item">
+        <div class="summary-icon si-red">🔴</div>
+        <div class="summary-info">
+          <div class="val">4</div>
+          <div class="lbl">Problemas críticos</div>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-icon si-blue">🔗</div>
+        <div class="summary-info">
+          <div class="val">14</div>
+          <div class="lbl">Ferramentas desconectadas</div>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-icon si-green">✅</div>
+        <div class="summary-info">
+          <div class="val">HubSpot</div>
+          <div class="lbl">CRM recomendado</div>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-icon si-warn">📋</div>
+        <div class="summary-info">
+          <div class="val">18</div>
+          <div class="lbl">Perguntas para a demo</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="container">
 
     <!-- DIAGNÓSTICO -->
     <div class="section">
-      <div class="section-title">Situação Atual</div>
-      <h2>Diagnóstico</h2>
+      <div class="section-eyebrow">Situação Atual</div>
+      <h2 class="section-title">Diagnóstico</h2>
       <div class="problems-grid">
         <div class="problem-card">
-          <div class="icon">📵</div>
+          <div class="problem-icon">📵</div>
           <h3>Ligações com número aleatório</h3>
           <p>A Clint faz ligações por números desconhecidos. A taxa de atendimento ficou baixíssima. O time passou a usar celular pessoal.</p>
         </div>
         <div class="problem-card">
-          <div class="icon">📨</div>
+          <div class="problem-icon">📨</div>
           <h3>Só envia template de mensagem</h3>
           <p>Impossível mandar mensagem personalizada. O contato real com o lead acontece pelo WhatsApp pessoal das SDRs.</p>
         </div>
         <div class="problem-card">
-          <div class="icon">📊</div>
+          <div class="problem-icon">📊</div>
           <h3>Métricas completamente erradas</h3>
           <p>A Clint atribuía vendas do produto errado. Ninguém conseguia ver o número real de conversão.</p>
         </div>
         <div class="problem-card">
-          <div class="icon">📋</div>
+          <div class="problem-icon">📋</div>
           <h3>A planilha virou o CRM real</h3>
           <p>Todo o controle de leads, score e distribuição de SDR foi feito manualmente em Google Sheets. A Clint ficou para segundo plano.</p>
         </div>
       </div>
     </div>
 
-    <!-- FERRAMENTAS ATUAIS -->
+    <!-- STACK DE FERRAMENTAS -->
     <div class="section">
-      <div class="section-title">Stack atual</div>
-      <h2>14 ferramentas desconectadas</h2>
+      <div class="section-eyebrow">Stack atual</div>
+      <h2 class="section-title">14 ferramentas desconectadas</h2>
       <div class="tools-grid">
         <div class="tool-card">
           <span class="tool-name">Respondi</span>
@@ -586,11 +842,11 @@
 
     <!-- REQUISITOS -->
     <div class="section">
-      <div class="section-title">O que o CRM precisa fazer</div>
-      <h2>Requisitos essenciais</h2>
+      <div class="section-eyebrow">O que o CRM precisa fazer</div>
+      <h2 class="section-title">Requisitos essenciais</h2>
 
       <div class="req-block">
-        <h3><span class="dot"></span> Pipeline de vendas</h3>
+        <h3><span class="req-dot"></span> Pipeline de vendas</h3>
         <ul class="req-list">
           <li>Kanban: Novo Lead → Contato SDR → Qualificado → Agendado → Follow-up → No-show → Fechado</li>
           <li>Duas pipelines separadas: High Ticket (via aplicação) e Low Ticket (abandono de carrinho)</li>
@@ -600,7 +856,7 @@
       </div>
 
       <div class="req-block">
-        <h3><span class="dot"></span> Automações críticas</h3>
+        <h3><span class="req-dot"></span> Automações críticas</h3>
         <ul class="req-list">
           <li>Lead entra → validação automática de CPF, CNPJ e número de WhatsApp</li>
           <li>Score automático 0–100 (fervendo / quente / morno / frio) com base nos dados do formulário</li>
@@ -612,7 +868,7 @@
       </div>
 
       <div class="req-block">
-        <h3><span class="dot"></span> Dashboard de métricas reais</h3>
+        <h3><span class="req-dot"></span> Dashboard de métricas reais</h3>
         <ul class="req-list">
           <li>Total de leads → contatados → atenderam → call marcada → call realizada → no-show → comprou</li>
           <li>Visão por SDR, por temperatura do lead, por produto</li>
@@ -621,7 +877,7 @@
       </div>
 
       <div class="req-block">
-        <h3><span class="dot"></span> Copiloto em tempo real nas calls (futuro)</h3>
+        <h3><span class="req-dot"></span> Copiloto em tempo real nas calls <span style="font-size:12px;color:var(--text-3);font-weight:400;margin-left:6px;">(futuro)</span></h3>
         <ul class="req-list">
           <li>Ouve o cliente e o closer em tempo real via Fireflies</li>
           <li>Sugere o que falar com base no NEPIC, temperatura e histórico do lead</li>
@@ -632,81 +888,87 @@
 
     <!-- COMPARATIVO -->
     <div class="section">
-      <div class="section-title">Análise</div>
-      <h2>HubSpot vs PipeDrive</h2>
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>Critério</th>
-            <th>HubSpot ✦</th>
-            <th>PipeDrive</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Integração WhatsApp / API Meta</td>
-            <td>Nativo e robusto</td>
-            <td>Via terceiros</td>
-          </tr>
-          <tr>
-            <td>Sub-pipelines dentro de colunas</td>
-            <td>Sim</td>
-            <td>Não possui</td>
-          </tr>
-          <tr>
-            <td>Score de lead nativo (0–100)</td>
-            <td>Sim, critérios customizados</td>
-            <td>Apenas via integração</td>
-          </tr>
-          <tr>
-            <td>Dashboard customizável</td>
-            <td>Completo</td>
-            <td>Limitado</td>
-          </tr>
-          <tr>
-            <td>API aberta para IA e automações</td>
-            <td>Sim</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <td>Fireflies / Just Call / Calendly</td>
-            <td>Integra</td>
-            <td>Integra</td>
-          </tr>
-          <tr>
-            <td>Múltiplas pipelines</td>
-            <td>Sim</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <td>Preço</td>
-            <td>Maior</td>
-            <td>Menor</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="section-eyebrow">Análise</div>
+      <h2 class="section-title">HubSpot vs PipeDrive</h2>
+      <div class="table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Critério</th>
+              <th>
+                <div class="table-header-hubspot">
+                  HubSpot <span class="winner-chip">✦ Escolhido</span>
+                </div>
+              </th>
+              <th>PipeDrive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Integração WhatsApp / API Meta</td>
+              <td>Nativo e robusto</td>
+              <td>Via terceiros</td>
+            </tr>
+            <tr>
+              <td>Sub-pipelines dentro de colunas</td>
+              <td>Sim</td>
+              <td>Não possui</td>
+            </tr>
+            <tr>
+              <td>Score de lead nativo (0–100)</td>
+              <td>Sim, critérios customizados</td>
+              <td>Apenas via integração</td>
+            </tr>
+            <tr>
+              <td>Dashboard customizável</td>
+              <td>Completo</td>
+              <td>Limitado</td>
+            </tr>
+            <tr>
+              <td>API aberta para IA e automações</td>
+              <td>Sim</td>
+              <td>Sim</td>
+            </tr>
+            <tr>
+              <td>Fireflies / Just Call / Calendly</td>
+              <td>Integra</td>
+              <td>Integra</td>
+            </tr>
+            <tr>
+              <td>Múltiplas pipelines</td>
+              <td>Sim</td>
+              <td>Sim</td>
+            </tr>
+            <tr>
+              <td>Preço</td>
+              <td>Maior</td>
+              <td>Menor</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- RECOMENDAÇÃO -->
     <div class="section">
       <div class="recommendation-box">
-        <div class="rec-label">Recomendação Final</div>
-        <h2>HubSpot <span class="winner-badge">Escolhido</span></h2>
+        <div class="rec-eyebrow">Recomendação Final</div>
+        <h2>HubSpot <span class="winner-badge">✦ Escolhido</span></h2>
         <p>Para o volume, complexidade e ambição de automação da Bilhon, o HubSpot centraliza melhor tudo em um único card por lead. O diferencial crítico é o sub-pipeline dentro das colunas e o score nativo — que o PipeDrive não tem.</p>
       </div>
     </div>
 
     <!-- PLANO DE AÇÃO -->
     <div class="section">
-      <div class="section-title">Execução</div>
-      <h2>Plano de Ação</h2>
+      <div class="section-eyebrow">Execução</div>
+      <h2 class="section-title">Plano de Ação</h2>
 
       <div class="phase-block">
         <div class="phase-header">
           <div class="phase-number">1</div>
           <div class="phase-info">
             <h3>Até esta sexta-feira — 30% do processo</h3>
-            <span>Imediato</span>
+            <span class="phase-tag">Imediato</span>
           </div>
         </div>
         <ul class="action-list">
@@ -723,7 +985,7 @@
           <div class="phase-number">2</div>
           <div class="phase-info">
             <h3>Semanas 2 e 3 — 100% do processo</h3>
-            <span>2–3 semanas</span>
+            <span class="phase-tag">2–3 semanas</span>
           </div>
         </div>
         <ul class="action-list">
@@ -760,11 +1022,11 @@
 
     <!-- PERGUNTAS DEMO -->
     <div class="section">
-      <div class="section-title">Demo HubSpot — Amanhã</div>
-      <h2>O que perguntar na call</h2>
+      <div class="section-eyebrow">Demo HubSpot · Amanhã</div>
+      <h2 class="section-title">O que perguntar na call</h2>
 
       <div class="questions-group">
-        <h3>Integrações críticas</h3>
+        <div class="q-group-header">Integrações críticas</div>
         <div class="question-item">
           <span class="q-number">1</span>
           <span class="q-text">Como funciona a integração nativa com WhatsApp via API Meta? Consigo enviar mensagem livre, não só template?</span>
@@ -796,7 +1058,7 @@
       </div>
 
       <div class="questions-group">
-        <h3>Funcionalidades do CRM</h3>
+        <div class="q-group-header">Funcionalidades do CRM</div>
         <div class="question-item">
           <span class="q-number">8</span>
           <span class="q-text">Consigo criar múltiplas pipelines separadas para High Ticket e Low Ticket?</span>
@@ -820,7 +1082,7 @@
       </div>
 
       <div class="questions-group">
-        <h3>Dados e Métricas</h3>
+        <div class="q-group-header">Dados e Métricas</div>
         <div class="question-item">
           <span class="q-number">13</span>
           <span class="q-text">O dashboard mostra métricas de funil em tempo real: leads → contatados → calls → fechados?</span>
@@ -836,7 +1098,7 @@
       </div>
 
       <div class="questions-group">
-        <h3>Técnico e Preço</h3>
+        <div class="q-group-header">Técnico e Preço</div>
         <div class="question-item">
           <span class="q-number">16</span>
           <span class="q-text">Qual o custo para nossa operação: quantos usuários precisamos, qual o volume de leads/mês suportado?</span>
@@ -850,14 +1112,13 @@
           <span class="q-text">Tem limite de automações no plano? Qual plano cobre todas as funcionalidades listadas?</span>
         </div>
       </div>
-
     </div>
 
   </div>
 
-  <div class="footer">
-    Bilhon — Relatório CRM · Gerado por Claude Code
-  </div>
+  <footer class="footer">
+    <strong>Bilhon</strong> · Relatório CRM · Redesenhado por Design Chief — AIOS
+  </footer>
 
 </body>
 </html>
