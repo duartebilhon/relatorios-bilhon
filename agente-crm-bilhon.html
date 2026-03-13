@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agente CRM Bilhon — Especialista em Implantação</title>
+  <style>
+    :root {
+      --blue: #4f8ef7;
+      --blue-dark: #1e2a4a;
+      --green: #38d9a9;
+      --orange: #fd7e14;
+      --red: #f03e3e;
+      --yellow: #ffd43b;
+      --bg: #0b0b10;
+      --surface: #13131c;
+      --surface2: #1a1a28;
+      --border: #252538;
+      --text: #e2e8f0;
+      --muted: #718096;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 30px;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #1a2d5a 0%, var(--bg) 70%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 60px,
+        rgba(79,142,247,.03) 60px, rgba(79,142,247,.03) 61px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 60px,
+        rgba(79,142,247,.03) 60px, rgba(79,142,247,.03) 61px
+      );
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(79,142,247,.12);
+      border: 1px solid rgba(79,142,247,.35);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      max-width: 900px;
+    }
+
+    .hero h1 span { color: var(--blue); }
+
+    .hero p {
+      font-size: clamp(17px, 2vw, 22px);
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 48px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .hero-stat span {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── SECTION ── */
+    section { padding: 100px 30px; }
+    section:nth-child(even) { background: var(--surface); }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 60px;
+    }
+
+    /* ── CAPABILITIES GRID ── */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .cap-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .cap-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+    }
+
+    .cap-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .cap-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .cap-card p {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    /* ── PIPELINE VISUAL ── */
+    .pipeline-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pipeline-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    .pipeline-stage {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--blue-dark);
+      border: 1px solid rgba(79,142,247,.3);
+      border-right: none;
+      border-radius: 12px 0 0 12px;
+      padding: 16px 20px;
+    }
+
+    .stage-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stage-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .pipeline-subs {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .sub-tag {
+      background: rgba(79,142,247,.1);
+      border: 1px solid rgba(79,142,247,.2);
+      color: #a0b8f0;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+
+    /* ── SCORE TABLE ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .score-card {
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    .score-card.fervendo { background: rgba(240,62,62,.08); border-color: rgba(240,62,62,.3); }
+    .score-card.quente   { background: rgba(253,126,20,.08); border-color: rgba(253,126,20,.3); }
+    .score-card.morno    { background: rgba(255,212,59,.08); border-color: rgba(255,212,59,.3); }
+    .score-card.frio     { background: rgba(79,142,247,.08); border-color: rgba(79,142,247,.3); }
+
+    .score-emoji { font-size: 36px; margin-bottom: 10px; }
+    .score-range { font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .score-label { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .score-action { font-size: 13px; color: var(--muted); }
+
+    .score-card.fervendo .score-label { color: #f03e3e; }
+    .score-card.quente   .score-label { color: #fd7e14; }
+    .score-card.morno    .score-label { color: #ffd43b; }
+    .score-card.frio     .score-label { color: var(--blue); }
+
+    /* ── AUTOMAÇÕES ── */
+    .auto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .auto-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .auto-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .auto-card h3 .trigger {
+      background: rgba(56,217,169,.12);
+      border: 1px solid rgba(56,217,169,.25);
+      color: var(--green);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+
+    .auto-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .auto-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #a0aec0;
+    }
+
+    .auto-step .arrow {
+      color: var(--blue);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── TREINAMENTO ── */
+    .training-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .training-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .training-header {
+      padding: 24px 28px;
+      background: var(--blue-dark);
+      border-bottom: 1px solid rgba(79,142,247,.2);
+    }
+
+    .training-header h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .training-header p {
+      font-size: 14px;
+      color: #7a9fd4;
+      margin-top: 4px;
+    }
+
+    .training-body {
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .training-item {
+      display: flex;
+      gap: 12px;
+      font-size: 15px;
+      color: #cbd5e0;
+      align-items: flex-start;
+    }
+
+    .training-item .num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(79,142,247,.15);
+      border: 1px solid rgba(79,142,247,.3);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .okr-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(79,142,247,.06);
+      border: 1px solid rgba(79,142,247,.15);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-top: 8px;
+    }
+
+    .okr-bar span { font-size: 13px; color: var(--muted); }
+    .okr-bar strong { font-size: 14px; color: var(--blue); font-weight: 700; }
+
+    /* ── NEPIC ── */
+    .nepic-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .nepic-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .nepic-num {
+      font-size: 11px;
+      color: var(--blue);
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .nepic-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .nepic-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── INTEGRAÇÕES ── */
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .integration-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: border-color .2s;
+    }
+
+    .integration-card:hover { border-color: var(--blue); }
+
+    .integration-icon { font-size: 28px; margin-bottom: 10px; }
+    .integration-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .integration-role { font-size: 12px; color: var(--muted); }
+
+    .integration-card .badge {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
+
+    .badge-keep    { background: rgba(56,217,169,.12); color: var(--green); border: 1px solid rgba(56,217,169,.25); }
+    .badge-replace { background: rgba(240,62,62,.12); color: #f87171; border: 1px solid rgba(240,62,62,.25); }
+
+    /* ── MÉTRICAS ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .metric-card h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .metric-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: #a0aec0;
+    }
+
+    .metric-row:last-child { border-bottom: none; }
+    .metric-row .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+
+    /* ── COMANDOS ── */
+    .commands-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .command-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .command-key {
+      background: rgba(79,142,247,.1);
+      border: 1px solid rgba(79,142,247,.25);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      font-family: monospace;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .command-desc {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* ── CTA ── */
+    .cta {
+      text-align: center;
+      padding: 100px 30px;
+      background: radial-gradient(ellipse 70% 70% at 50% 100%, #1a2d5a 0%, var(--bg) 70%);
+    }
+
+    .cta h2 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .cta p { font-size: 18px; color: var(--muted); margin-bottom: 40px; }
+
+    .cta-command {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      font-family: monospace;
+      padding: 16px 36px;
+      border-radius: 12px;
+      letter-spacing: 1px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .cap-grid, .score-grid, .nepic-grid, .integrations-grid, .commands-grid { grid-template-columns: 1fr 1fr; }
+      .auto-grid, .training-grid, .metrics-grid { grid-template-columns: 1fr; }
+      .pipeline-row { grid-template-columns: 160px 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .cap-grid, .score-grid, .nepic-grid, .integrations-grid, .commands-grid { grid-template-columns: 1fr; }
+      .pipeline-row { grid-template-columns: 1fr; }
+      .pipeline-stage { border-radius: 12px 12px 0 0; border-right: 1px solid rgba(79,142,247,.3); border-bottom: none; }
+      .pipeline-subs { border-radius: 0 0 12px 12px; }
+      .hero-stats { gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">🏗️ /agents:crm-bilhon</div>
+  <h1>O agente que monta sua<br><span>estrutura completa de vendas</span><br>dentro do CRM</h1>
+  <p>Especialista em implantação de HubSpot, pipelines por produto, sub-pipelines por etapa, score de leads, automações end-to-end, integrações e treinamento de time comercial.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <strong>3</strong>
+      <span>Pipelines por produto</span>
+    </div>
+    <div class="hero-stat">
+      <strong>14</strong>
+      <span>Ferramentas integradas</span>
+    </div>
+    <div class="hero-stat">
+      <strong>10</strong>
+      <span>Etapas + sub-etapas</span>
+    </div>
+    <div class="hero-stat">
+      <strong>8</strong>
+      <span>Automações mapeadas</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── CAPACIDADES ── -->
+<section>
+  <div class="container">
+    <div class="section-label">O que ele sabe fazer</div>
+    <h2 class="section-title">9 especialidades em um agente</h2>
+    <p class="section-sub">Do zero ao CRM em produção — instrui cada etapa com precisão, aplicada à realidade da Bilhon.</p>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-icon">🗂️</div>
+        <h3>Arquitetura de Pipelines</h3>
+        <p>Monta pipelines separadas por produto com etapas, critérios de avanço e sub-etapas dentro de cada coluna.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🔀</div>
+        <h3>Sub-pipelines por Etapa</h3>
+        <p>Define o que precisa acontecer dentro de cada etapa antes de o lead avançar — nada passa sem cumprir os critérios.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🎯</div>
+        <h3>Score e Temperatura</h3>
+        <p>Sistema de pontuação 0–100 com critérios customizados (faturamento, tamanho de time, intenção declarada).</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">⚡</div>
+        <h3>Automações End-to-End</h3>
+        <p>Da entrada do lead ao onboarding pós-venda — sem intervenção manual nos fluxos críticos.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🔌</div>
+        <h3>Integrações Técnicas</h3>
+        <p>Passo a passo de como conectar cada uma das 14 ferramentas da Bilhon ao HubSpot via API e webhooks.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🧑‍💼</div>
+        <h3>Treinamento de SDR</h3>
+        <p>Protocolo completo: sequência de 4 contatos, o que registrar no card, OKRs e critérios de qualificação.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🤝</div>
+        <h3>Treinamento de Closer</h3>
+        <p>Protocolo pré-call, as 8 fases NEPIC, objeções + respostas padrão e o que registrar após cada call.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">📊</div>
+        <h3>Dashboard de Métricas</h3>
+        <p>Define quais métricas montar: funil completo, por SDR, por Closer, por produto e por origem do lead.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🗺️</div>
+        <h3>Plano de Implementação</h3>
+        <p>4 fases com checklists — da estrutura base às automações avançadas, com prazos e responsáveis definidos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PIPELINE ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Arquitetura</div>
+    <h2 class="section-title">Pipeline High Ticket — detalhada</h2>
+    <p class="section-sub">Cada etapa tem sub-etapas obrigatórias e critério de avanço. Nenhum lead passa sem completar o checklist da etapa anterior.</p>
+    <div class="pipeline-grid">
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">1</div>
+          <div class="stage-name">Novo Lead</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Validação CPF/CNPJ/WhatsApp</span>
+          <span class="sub-tag">Score calculado</span>
+          <span class="sub-tag">Tag de origem</span>
+          <span class="sub-tag">Distribuído ao SDR</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">2</div>
+          <div class="stage-name">Em Contato — SDR</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Tentativa 1 — WhatsApp D+0</span>
+          <span class="sub-tag">Tentativa 2 — Follow-up D+1</span>
+          <span class="sub-tag">Tentativa 3 — Ligação D+2</span>
+          <span class="sub-tag">Tentativa 4 — D+4</span>
+          <span class="sub-tag">Registro do resultado</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">3</div>
+          <div class="stage-name">Qualificado</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Perfil validado</span>
+          <span class="sub-tag">Dor confirmada</span>
+          <span class="sub-tag">Instagram/LinkedIn enriquecido</span>
+          <span class="sub-tag">Briefing enviado ao Closer</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">4</div>
+          <div class="stage-name">Agendado</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Calendly + Google Meet</span>
+          <span class="sub-tag">Confirmação D-1 WhatsApp</span>
+          <span class="sub-tag">Lembrete 2h antes</span>
+          <span class="sub-tag">Briefing IA no card</span>
+          <span class="sub-tag">Closer notificado</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">5</div>
+          <div class="stage-name">Em Negociação</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Call realizada (Fireflies)</span>
+          <span class="sub-tag">8 fases NEPIC</span>
+          <span class="sub-tag">Objeções mapeadas</span>
+          <span class="sub-tag">Próximo passo definido</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">6</div>
+          <div class="stage-name">Proposta Enviada</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Contrato gerado via Autentic</span>
+          <span class="sub-tag">Enviado para assinatura</span>
+          <span class="sub-tag">Follow-up D+1 e D+3</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">7</div>
+          <div class="stage-name">Follow-up Pós-call</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Nutrição D+2, D+7, D+15, D+30</span>
+          <span class="sub-tag">Reengajamento por Copywriter</span>
+          <span class="sub-tag">Closer retoma ao sinal de interesse</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">8</div>
+          <div class="stage-name">No-show</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Reagendamento D+0, D+2, D+5</span>
+          <span class="sub-tag">Volta para Agendado ou Follow-up</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">9</div>
+          <div class="stage-name">Fechado ✓</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Pagamento confirmado</span>
+          <span class="sub-tag">Pipeline CS ativada</span>
+          <span class="sub-tag">Grupo WhatsApp criado</span>
+          <span class="sub-tag">Onboarding iniciado</span>
+        </div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-stage">
+          <div class="stage-num">10</div>
+          <div class="stage-name">Perdido ✗</div>
+        </div>
+        <div class="pipeline-subs">
+          <span class="sub-tag">Motivo obrigatório registrado</span>
+          <span class="sub-tag">Categoria: preço / timing / concorrente / sem perfil</span>
+          <span class="sub-tag">Nutrição passiva mensal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCORE ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Score & Temperatura</div>
+    <h2 class="section-title">Sistema de priorização 0–100</h2>
+    <p class="section-sub">Todo lead entra com um score automático. A temperatura define a urgência de contato e a fila de distribuição dos SDRs.</p>
+    <div class="score-grid">
+      <div class="score-card fervendo">
+        <div class="score-emoji">🔴</div>
+        <div class="score-range">90–100</div>
+        <div class="score-label">Fervendo</div>
+        <div class="score-action">Contato em até 13 segundos</div>
+      </div>
+      <div class="score-card quente">
+        <div class="score-emoji">🟠</div>
+        <div class="score-range">70–89</div>
+        <div class="score-label">Quente</div>
+        <div class="score-action">Contato em até 5 minutos</div>
+      </div>
+      <div class="score-card morno">
+        <div class="score-emoji">🟡</div>
+        <div class="score-range">50–69</div>
+        <div class="score-label">Morno</div>
+        <div class="score-action">Contato em até 1 hora</div>
+      </div>
+      <div class="score-card frio">
+        <div class="score-emoji">🔵</div>
+        <div class="score-range">0–49</div>
+        <div class="score-label">Frio / Gelado</div>
+        <div class="score-action">Fila normal / sem distribuição</div>
+      </div>
+    </div>
+    <div class="auto-grid">
+      <div class="auto-card">
+        <h3>Critérios de pontuação <span class="trigger">Automático</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> Faturamento acima de R$5M → +30 pts</div>
+          <div class="auto-step"><span class="arrow">→</span> Faturamento R$1M a R$5M → +25 pts</div>
+          <div class="auto-step"><span class="arrow">→</span> Time acima de 20 pessoas → +15 pts</div>
+          <div class="auto-step"><span class="arrow">→</span> Descrição do negócio detalhada → +20 pts</div>
+          <div class="auto-step"><span class="arrow">→</span> "Quero aplicar imediatamente" → +20 pts</div>
+          <div class="auto-step"><span class="arrow">→</span> Pagou taxa de aplicação (R$5K) → score máximo</div>
+        </div>
+      </div>
+      <div class="auto-card">
+        <h3>Distribuição por temperatura <span class="trigger">Round-robin</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> Fervendo + Quente → pool único, round-robin</div>
+          <div class="auto-step"><span class="arrow">→</span> Quem tem menos leads recebe o próximo</div>
+          <div class="auto-step"><span class="arrow">→</span> Morno → round-robin separado</div>
+          <div class="auto-step"><span class="arrow">→</span> Frio / Gelado → sem distribuição ativa</div>
+          <div class="auto-step"><span class="arrow">→</span> SDR notificado via WhatsApp com resumo do lead</div>
+          <div class="auto-step"><span class="arrow">→</span> Carta coringa: pagou aplicação → fundador ou SDR sênior</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AUTOMAÇÕES ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Automações</div>
+    <h2 class="section-title">8 automações mapeadas end-to-end</h2>
+    <p class="section-sub">O agente instrui como montar cada automação no HubSpot — gatilho, ação e resultado esperado.</p>
+    <div class="auto-grid">
+      <div class="auto-card">
+        <h3>Entrada de Lead <span class="trigger">Gatilho: formulário</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> Validar CPF / CNPJ / WhatsApp</div>
+          <div class="auto-step"><span class="arrow">→</span> Calcular score automaticamente</div>
+          <div class="auto-step"><span class="arrow">→</span> Criar card com todos os dados</div>
+          <div class="auto-step"><span class="arrow">→</span> Atribuir tag de origem</div>
+          <div class="auto-step"><span class="arrow">→</span> Distribuir para SDR por temperatura</div>
+          <div class="auto-step"><span class="arrow">→</span> Notificar SDR no WhatsApp</div>
+        </div>
+      </div>
+      <div class="auto-card">
+        <h3>Agendamento de Call <span class="trigger">Gatilho: Calendly</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> Criar evento no Google Meet</div>
+          <div class="auto-step"><span class="arrow">→</span> Confirmar agendamento via WhatsApp</div>
+          <div class="auto-step"><span class="arrow">→</span> Gerar briefing via Claude IA</div>
+          <div class="auto-step"><span class="arrow">→</span> Inserir briefing no card</div>
+          <div class="auto-step"><span class="arrow">→</span> Notificar Closer com script</div>
+          <div class="auto-step"><span class="arrow">→</span> Lembrete automático D-1 e 2h antes</div>
+        </div>
+      </div>
+      <div class="auto-card">
+        <h3>Fechamento <span class="trigger">Gatilho: closer fecha</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> Gerar contrato via Autentic</div>
+          <div class="auto-step"><span class="arrow">→</span> Enviar para assinatura do cliente</div>
+          <div class="auto-step"><span class="arrow">→</span> Após assinatura → mover para CS</div>
+          <div class="auto-step"><span class="arrow">→</span> Criar grupo WhatsApp de onboarding</div>
+          <div class="auto-step"><span class="arrow">→</span> Enviar kit de boas-vindas</div>
+          <div class="auto-step"><span class="arrow">→</span> Agendar call de onboarding com CS</div>
+        </div>
+      </div>
+      <div class="auto-card">
+        <h3>Follow-up Passivo <span class="trigger">Gatilho: tempo sem interação</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> D+2: mensagem de reengajamento (prova social)</div>
+          <div class="auto-step"><span class="arrow">→</span> D+7: conteúdo relevante ao segmento</div>
+          <div class="auto-step"><span class="arrow">→</span> D+15: oferta especial ou novo gatilho</div>
+          <div class="auto-step"><span class="arrow">→</span> D+30: última tentativa</div>
+          <div class="auto-step"><span class="arrow">→</span> Sem resposta → move para Perdido</div>
+        </div>
+      </div>
+      <div class="auto-card">
+        <h3>No-show <span class="trigger">Gatilho: hora da call passou</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> Move card para No-show automaticamente</div>
+          <div class="auto-step"><span class="arrow">→</span> SDR notificado para reagendar</div>
+          <div class="auto-step"><span class="arrow">→</span> Tentativas D+0, D+2, D+5</div>
+          <div class="auto-step"><span class="arrow">→</span> Reagendou → volta para Agendado</div>
+          <div class="auto-step"><span class="arrow">→</span> Não reagendou → move para Follow-up</div>
+        </div>
+      </div>
+      <div class="auto-card">
+        <h3>OKR Diário <span class="trigger">Gatilho: 23:59</span></h3>
+        <div class="auto-flow">
+          <div class="auto-step"><span class="arrow">→</span> Calcular ligações do SDR via Just Call</div>
+          <div class="auto-step"><span class="arrow">→</span> Calcular calls do Closer via Calendly</div>
+          <div class="auto-step"><span class="arrow">→</span> Atualizar OKRs no ClickUp</div>
+          <div class="auto-step"><span class="arrow">→</span> Enviar resumo ao Head Comercial no WhatsApp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TREINAMENTO ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Treinamento de Time</div>
+    <h2 class="section-title">Protocolos para SDR e Closer</h2>
+    <p class="section-sub">O agente instrui cada papel do time com protocolos claros de uso do CRM, o que registrar e quais OKRs perseguir.</p>
+    <div class="training-grid">
+      <div class="training-card">
+        <div class="training-header">
+          <h3>🧑‍💼 SDR — Protocolo completo</h3>
+          <p>Responsável pelas etapas 1 a 4. Objetivo: qualificar e agendar — nunca fechar.</p>
+        </div>
+        <div class="training-body">
+          <div class="training-item">
+            <span class="num">1</span>
+            Abrir card e ler score + temperatura do lead
+          </div>
+          <div class="training-item">
+            <span class="num">2</span>
+            Analisar dados do formulário + Instagram + histórico
+          </div>
+          <div class="training-item">
+            <span class="num">3</span>
+            Enviar mensagem personalizada — nunca template genérico
+          </div>
+          <div class="training-item">
+            <span class="num">4</span>
+            Registrar resultado no card: respondeu / não / inválido
+          </div>
+          <div class="training-item">
+            <span class="num">5</span>
+            Sequência de 4 contatos (D+0, D+1, D+2, D+4)
+          </div>
+          <div class="training-item">
+            <span class="num">6</span>
+            Passar briefing completo ao Closer antes de transferir
+          </div>
+          <div class="okr-bar">
+            <span>50–100 contatos/dia</span>
+            <strong>OKR SDR</strong>
+          </div>
+          <div class="okr-bar">
+            <span>≥ 40% dos qualificados agendados</span>
+            <strong>Meta agendamento</strong>
+          </div>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-header">
+          <h3>🤝 Closer — Protocolo completo</h3>
+          <p>Recebe leads qualificados com briefing pronto. Faz a call e conduz ao fechamento.</p>
+        </div>
+        <div class="training-body">
+          <div class="training-item">
+            <span class="num">1</span>
+            Ler briefing gerado pela IA no card antes da call
+          </div>
+          <div class="training-item">
+            <span class="num">2</span>
+            Ver histórico de conversa do SDR
+          </div>
+          <div class="training-item">
+            <span class="num">3</span>
+            Abrir script NEPIC personalizado (gerado automaticamente)
+          </div>
+          <div class="training-item">
+            <span class="num">4</span>
+            Dividir telas: lead na esquerda, script na direita
+          </div>
+          <div class="training-item">
+            <span class="num">5</span>
+            Fireflies ativado — grava e transcreve automaticamente
+          </div>
+          <div class="training-item">
+            <span class="num">6</span>
+            Registrar objeções, decisão e próximo passo no card
+          </div>
+          <div class="okr-bar">
+            <span>5 calls/dia mínimo</span>
+            <strong>OKR Closer</strong>
+          </div>
+          <div class="okr-bar">
+            <span>≥ 25% das calls → fechamento</span>
+            <strong>Meta conversão</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEPIC ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Script de Vendas</div>
+    <h2 class="section-title">As 8 fases NEPIC</h2>
+    <p class="section-sub">O agente instrui o Closer nas 8 fases do script — gerado automaticamente e customizado com os dados do lead.</p>
+    <div class="nepic-grid">
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 01</div>
+        <div class="nepic-title">Conexão</div>
+        <div class="nepic-desc">Rapport inicial — humanizar a conversa antes de qualquer coisa</div>
+      </div>
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 02</div>
+        <div class="nepic-title">Abertura</div>
+        <div class="nepic-desc">Alinhar agenda da call e criar estrutura de confiança</div>
+      </div>
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 03</div>
+        <div class="nepic-title">Cenário</div>
+        <div class="nepic-desc">Entender onde o lead está hoje — realidade e contexto atual</div>
+      </div>
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 04</div>
+        <div class="nepic-title">Problema</div>
+        <div class="nepic-desc">Aprofundar a dor — fazer o lead sentir o peso do problema</div>
+      </div>
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 05</div>
+        <div class="nepic-title">Impacto</div>
+        <div class="nepic-desc">O que acontece se ele não resolver isso nos próximos meses?</div>
+      </div>
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 06</div>
+        <div class="nepic-title">Desejo</div>
+        <div class="nepic-desc">Onde ele quer chegar? Qual o sonho e o resultado esperado?</div>
+      </div>
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 07</div>
+        <div class="nepic-title">Apresentação</div>
+        <div class="nepic-desc">Mostrar a solução conectada exatamente à dor que ele mesmo descreveu</div>
+      </div>
+      <div class="nepic-card">
+        <div class="nepic-num">FASE 08</div>
+        <div class="nepic-title">Fechamento</div>
+        <div class="nepic-desc">Conduzir para decisão, lidar com objeções e definir próximo passo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INTEGRAÇÕES ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Stack Integrada</div>
+    <h2 class="section-title">14 ferramentas conectadas ao HubSpot</h2>
+    <p class="section-sub">O agente sabe o passo a passo de como integrar cada ferramenta — via API nativa, webhook ou Zapier.</p>
+    <div class="integrations-grid">
+      <div class="integration-card">
+        <div class="integration-icon">📋</div>
+        <div class="integration-name">Respondi</div>
+        <div class="integration-role">Formulário de aplicação</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">💬</div>
+        <div class="integration-name">API Meta</div>
+        <div class="integration-role">Disparo WhatsApp</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">📞</div>
+        <div class="integration-name">Just Call</div>
+        <div class="integration-role">Ligações + gravação</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">📅</div>
+        <div class="integration-name">Calendly</div>
+        <div class="integration-role">Agendamento de calls</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">🎥</div>
+        <div class="integration-name">Google Meet</div>
+        <div class="integration-role">Calls com leads</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">🎙️</div>
+        <div class="integration-name">Fireflies</div>
+        <div class="integration-role">Transcrição + IA</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">🤖</div>
+        <div class="integration-name">Claude / GPT</div>
+        <div class="integration-role">Briefing pré-call</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">✍️</div>
+        <div class="integration-name">Autentic</div>
+        <div class="integration-role">Contratos digitais</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">💳</div>
+        <div class="integration-name">Hotmart / Pix</div>
+        <div class="integration-role">Checkout + pagamento</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">✅</div>
+        <div class="integration-name">ClickUp</div>
+        <div class="integration-role">OKRs do time</div>
+        <span class="badge badge-keep">Manter</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">📊</div>
+        <div class="integration-name">Google Sheets</div>
+        <div class="integration-role">CRM legado</div>
+        <span class="badge badge-replace">Substituir</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">❌</div>
+        <div class="integration-name">Clint</div>
+        <div class="integration-role">CRM antigo</div>
+        <span class="badge badge-replace">Substituir</span>
+      </div>
+      <div class="integration-card">
+        <div class="integration-icon">❌</div>
+        <div class="integration-name">Zoom</div>
+        <div class="integration-role">Substituído pelo Meet</div>
+        <span class="badge badge-replace">Substituir</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MÉTRICAS ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Dashboard</div>
+    <h2 class="section-title">Métricas que o agente instrui a montar</h2>
+    <p class="section-sub">Visibilidade total — funil geral, por SDR, por Closer, por produto e por origem.</p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <h4>Funil Geral</h4>
+        <div class="metric-row"><span class="dot"></span> Total de leads válidos</div>
+        <div class="metric-row"><span class="dot"></span> % contatados pelo SDR</div>
+        <div class="metric-row"><span class="dot"></span> % que responderam</div>
+        <div class="metric-row"><span class="dot"></span> % qualificados</div>
+        <div class="metric-row"><span class="dot"></span> % agendados</div>
+        <div class="metric-row"><span class="dot"></span> Show rate (compareceram)</div>
+        <div class="metric-row"><span class="dot"></span> Taxa de fechamento</div>
+        <div class="metric-row"><span class="dot"></span> Receita gerada no período</div>
+      </div>
+      <div class="metric-card">
+        <h4>Por SDR / Closer</h4>
+        <div class="metric-row"><span class="dot"></span> Ligações realizadas / dia</div>
+        <div class="metric-row"><span class="dot"></span> Leads contatados / dia</div>
+        <div class="metric-row"><span class="dot"></span> Qualificados gerados</div>
+        <div class="metric-row"><span class="dot"></span> Agendamentos gerados</div>
+        <div class="metric-row"><span class="dot"></span> Calls realizadas (Closer)</div>
+        <div class="metric-row"><span class="dot"></span> Show rate por Closer</div>
+        <div class="metric-row"><span class="dot"></span> Taxa de fechamento</div>
+        <div class="metric-row"><span class="dot"></span> Ticket médio por Closer</div>
+      </div>
+      <div class="metric-card">
+        <h4>Por Produto / Origem</h4>
+        <div class="metric-row"><span class="dot"></span> Leads High vs Low Ticket</div>
+        <div class="metric-row"><span class="dot"></span> Conversão por produto</div>
+        <div class="metric-row"><span class="dot"></span> CAC por produto</div>
+        <div class="metric-row"><span class="dot"></span> Leads por origem (Imersão, ADS...)</div>
+        <div class="metric-row"><span class="dot"></span> Conversão por origem</div>
+        <div class="metric-row"><span class="dot"></span> Custo por lead por origem</div>
+        <div class="metric-row"><span class="dot"></span> ROI por canal de aquisição</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMANDOS ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Como usar</div>
+    <h2 class="section-title">Comandos disponíveis</h2>
+    <p class="section-sub">Digite o comando para o agente instruir exatamente o que fazer naquele ponto da implantação.</p>
+    <div class="commands-grid">
+      <div class="command-card">
+        <span class="command-key">*pipeline [produto]</span>
+        <span class="command-desc">Instrui como montar a pipeline completa do produto com etapas e sub-etapas</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*sub-pipeline [etapa]</span>
+        <span class="command-desc">Detalha o que precisa acontecer dentro de uma etapa específica</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*score</span>
+        <span class="command-desc">Como configurar o sistema de score 0–100 no HubSpot com critérios customizados</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*automacao [gatilho]</span>
+        <span class="command-desc">Instrui como montar a automação a partir de um gatilho específico</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*integracao [ferramenta]</span>
+        <span class="command-desc">Passo a passo de como integrar uma ferramenta ao HubSpot</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*treinar-sdr</span>
+        <span class="command-desc">Protocolo completo de treinamento do SDR no CRM</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*treinar-closer</span>
+        <span class="command-desc">Protocolo completo de treinamento do Closer — NEPIC e registros no card</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*dashboard</span>
+        <span class="command-desc">O que configurar no dashboard e quais métricas priorizar primeiro</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*status</span>
+        <span class="command-desc">Situação atual da migração — o que foi feito e o que falta</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*objecoes</span>
+        <span class="command-desc">Tabela de objeções comuns e respostas padrão por etapa do funil</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*nepic</span>
+        <span class="command-desc">As 8 fases do script NEPIC com instruções de uso para o Closer</span>
+      </div>
+      <div class="command-card">
+        <span class="command-key">*decisao</span>
+        <span class="command-desc">Resumo da decisão HubSpot vs PipeDrive e todas as justificativas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta">
+  <h2>Pronto para montar o<br>CRM do zero?</h2>
+  <p>Ative o agente e comece pela estrutura de pipeline, score ou qualquer ponto da implantação.</p>
+  <div class="cta-command">🏗️ /agents:crm-bilhon</div>
+</div>
+
+</body>
+</html>
