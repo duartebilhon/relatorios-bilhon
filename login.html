@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso Restrito — Bilhon</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: #07070f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .card {
+    background: #0d0d1c;
+    border: 1px solid #1e1e35;
+    border-radius: 16px;
+    padding: 48px 40px;
+    width: 360px;
+    text-align: center;
+  }
+  .logo {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #c9a227;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-size: 20px;
+    color: #e2e8f0;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  p {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 32px;
+  }
+  input[type="password"] {
+    width: 100%;
+    padding: 13px 16px;
+    background: #07070f;
+    border: 1px solid #1e1e35;
+    border-radius: 10px;
+    color: #e2e8f0;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 14px;
+    transition: border-color .2s;
+  }
+  input[type="password"]:focus { border-color: #c9a227; }
+  button {
+    width: 100%;
+    padding: 13px;
+    background: #c9a227;
+    border: none;
+    border-radius: 10px;
+    color: #07070f;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  button:hover { opacity: .88; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .error {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">Bilhon</div>
+  <h1>Acesso Restrito</h1>
+  <p>Digite a senha para continuar</p>
+  <input type="password" id="pwd" placeholder="Senha" autofocus>
+  <button id="btn" onclick="login()">Entrar</button>
+  <div class="error" id="err">Senha incorreta.</div>
+</div>
+<script>
+  document.getElementById('pwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') login();
+  });
+
+  async function login() {
+    const pwd = document.getElementById('pwd').value;
+    const btn = document.getElementById('btn');
+    const err = document.getElementById('err');
+
+    if (!pwd) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+    err.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd })
+      });
+
+      if (res.ok) {
+        const params = new URLSearchParams(window.location.search);
+        window.location.href = params.get('next') || '/';
+      } else {
+        err.style.display = 'block';
+        document.getElementById('pwd').value = '';
+        document.getElementById('pwd').focus();
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+      }
+    } catch {
+      err.textContent = 'Erro de conexão. Tente novamente.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+    }
+  }
+</script>
+</body>
+</html>
